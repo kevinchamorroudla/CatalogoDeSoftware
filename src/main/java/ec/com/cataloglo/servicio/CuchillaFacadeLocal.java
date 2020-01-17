@@ -5,7 +5,7 @@
  */
 package ec.com.cataloglo.servicio;
 
-import ec.com.catalogo.modelo.Instancia;
+import ec.com.catalogo.modelo.Cuchilla;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,19 +14,19 @@ import javax.ejb.Local;
  * @author carlosballadares
  */
 @Local
-public interface InstanciaFacadeLocal {
+public interface CuchillaFacadeLocal {
 
-    void create(Instancia instancia);
+    void create(Cuchilla cuchilla);
 
-    void edit(Instancia instancia);
+    void edit(Cuchilla cuchilla);
 
-    void remove(Instancia instancia);
+    void remove(Cuchilla cuchilla);
 
-    Instancia find(Object id);
+    Cuchilla find(Object id);
 
-    List<Instancia> findAll();
+    List<Cuchilla> findAll();
 
-    List<Instancia> findRange(int[] range);
+    List<Cuchilla> findRange(int[] range);
 
     int count();
     

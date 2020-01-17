@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -24,35 +26,57 @@ import javax.persistence.Table;
 @Table(name = "EquipoVirtual")
 @NamedQueries({
     @NamedQuery(name = "EquipoVirtual.findAll", query = "SELECT e FROM EquipoVirtual e"),
-    @NamedQuery(name = "EquipoVirtual.findByIpCuchillaVirtual", query = "SELECT e FROM EquipoVirtual e WHERE e.ipCuchillaVirtual = :ipCuchillaVirtual")})
+    @NamedQuery(name = "EquipoVirtual.findByIdEquipoVirtual", query = "SELECT e FROM EquipoVirtual e WHERE e.idEquipoVirtual = :idEquipoVirtual")})
 public class EquipoVirtual implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ipCuchillaVirtual")
-    private Integer ipCuchillaVirtual;
+    @Column(name = "id_EquipoVirtual")
+    private Integer idEquipoVirtual;
+    @JoinColumn(name = "id_Cuchilla", referencedColumnName = "id_Cuchilla")
+    @ManyToOne(optional = false)
+    private Cuchilla idCuchilla;
+    @JoinColumn(name = "id_Equipo", referencedColumnName = "id_Equipo")
+    @ManyToOne(optional = false)
+    private Equipo idEquipo;
 
     public EquipoVirtual() {
     }
 
-    public EquipoVirtual(Integer ipCuchillaVirtual) {
-        this.ipCuchillaVirtual = ipCuchillaVirtual;
+    public EquipoVirtual(Integer idEquipoVirtual) {
+        this.idEquipoVirtual = idEquipoVirtual;
     }
 
-    public Integer getIpCuchillaVirtual() {
-        return ipCuchillaVirtual;
+    public Integer getIdEquipoVirtual() {
+        return idEquipoVirtual;
     }
 
-    public void setIpCuchillaVirtual(Integer ipCuchillaVirtual) {
-        this.ipCuchillaVirtual = ipCuchillaVirtual;
+    public void setIdEquipoVirtual(Integer idEquipoVirtual) {
+        this.idEquipoVirtual = idEquipoVirtual;
+    }
+
+    public Cuchilla getIdCuchilla() {
+        return idCuchilla;
+    }
+
+    public void setIdCuchilla(Cuchilla idCuchilla) {
+        this.idCuchilla = idCuchilla;
+    }
+
+    public Equipo getIdEquipo() {
+        return idEquipo;
+    }
+
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ipCuchillaVirtual != null ? ipCuchillaVirtual.hashCode() : 0);
+        hash += (idEquipoVirtual != null ? idEquipoVirtual.hashCode() : 0);
         return hash;
     }
 
@@ -63,7 +87,7 @@ public class EquipoVirtual implements Serializable {
             return false;
         }
         EquipoVirtual other = (EquipoVirtual) object;
-        if ((this.ipCuchillaVirtual == null && other.ipCuchillaVirtual != null) || (this.ipCuchillaVirtual != null && !this.ipCuchillaVirtual.equals(other.ipCuchillaVirtual))) {
+        if ((this.idEquipoVirtual == null && other.idEquipoVirtual != null) || (this.idEquipoVirtual != null && !this.idEquipoVirtual.equals(other.idEquipoVirtual))) {
             return false;
         }
         return true;
@@ -71,7 +95,7 @@ public class EquipoVirtual implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.catalogo.modelo.EquipoVirtual[ ipCuchillaVirtual=" + ipCuchillaVirtual + " ]";
+        return "ec.com.catalogo.modelo.EquipoVirtual[ idEquipoVirtual=" + idEquipoVirtual + " ]";
     }
     
 }

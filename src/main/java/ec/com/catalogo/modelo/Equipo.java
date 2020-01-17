@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -30,13 +32,14 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Equipo.findAll", query = "SELECT e FROM Equipo e"),
     @NamedQuery(name = "Equipo.findByIdEquipo", query = "SELECT e FROM Equipo e WHERE e.idEquipo = :idEquipo"),
-    @NamedQuery(name = "Equipo.findByIpHardware", query = "SELECT e FROM Equipo e WHERE e.ipHardware = :ipHardware"),
-    @NamedQuery(name = "Equipo.findByNumerosSerie", query = "SELECT e FROM Equipo e WHERE e.numerosSerie = :numerosSerie"),
+    @NamedQuery(name = "Equipo.findByNombre", query = "SELECT e FROM Equipo e WHERE e.nombre = :nombre"),
+    @NamedQuery(name = "Equipo.findByHost", query = "SELECT e FROM Equipo e WHERE e.host = :host"),
     @NamedQuery(name = "Equipo.findByDireccionMAC", query = "SELECT e FROM Equipo e WHERE e.direccionMAC = :direccionMAC"),
     @NamedQuery(name = "Equipo.findByMemoria", query = "SELECT e FROM Equipo e WHERE e.memoria = :memoria"),
     @NamedQuery(name = "Equipo.findByIp", query = "SELECT e FROM Equipo e WHERE e.ip = :ip"),
     @NamedQuery(name = "Equipo.findByCapacidad", query = "SELECT e FROM Equipo e WHERE e.capacidad = :capacidad"),
-    @NamedQuery(name = "Equipo.findByIdMotorBaseDeDatos", query = "SELECT e FROM Equipo e WHERE e.idMotorBaseDeDatos = :idMotorBaseDeDatos")})
+    @NamedQuery(name = "Equipo.findByDescripcion", query = "SELECT e FROM Equipo e WHERE e.descripcion = :descripcion"),
+    @NamedQuery(name = "Equipo.findByTipoEquipo", query = "SELECT e FROM Equipo e WHERE e.tipoEquipo = :tipoEquipo")})
 public class Equipo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,13 +50,14 @@ public class Equipo implements Serializable {
     private Integer idEquipo;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ip_Hardware")
-    private int ipHardware;
+    @Size(min = 1, max = 100)
+    @Column(name = "nombre")
+    private String nombre;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "numerosSerie")
-    private String numerosSerie;
+    @Column(name = "host")
+    private String host;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -67,17 +71,40 @@ public class Equipo implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "IP")
+    @Column(name = "ip")
     private String ip;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "capacidad")
     private String capacidad;
-    @Column(name = "id_MotorBaseDeDatos")
-    private Integer idMotorBaseDeDatos;
+    @Size(max = 120)
+    @Column(name = "descripcion")
+    private String descripcion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "tipoEquipo")
+    private String tipoEquipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
-    private List<SoftwareEquipo> softwareEquipoList;
+    private List<SoftwareXEquipo> softwareXEquipoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private List<EquipoVirtual> equipoVirtualList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private List<Plataforma> plataformaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private List<MotorBaseDeDatos> motorBaseDeDatosList;
+    @JoinColumn(name = "id_DataCenter", referencedColumnName = "id_DataCenter")
+    @ManyToOne(optional = false)
+    private DataCenter idDataCenter;
+    @JoinColumn(name = "id_Procesador", referencedColumnName = "id_Procesador")
+    @ManyToOne(optional = false)
+    private Procesador idProcesador;
+    @JoinColumn(name = "id_SistemaOperativo", referencedColumnName = "id_SistemaOperativo")
+    @ManyToOne(optional = false)
+    private SistemaOperativo idSistemaOperativo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private List<EquipoFisico> equipoFisicoList;
 
     public Equipo() {
     }
@@ -86,14 +113,15 @@ public class Equipo implements Serializable {
         this.idEquipo = idEquipo;
     }
 
-    public Equipo(Integer idEquipo, int ipHardware, String numerosSerie, String direccionMAC, String memoria, String ip, String capacidad) {
+    public Equipo(Integer idEquipo, String nombre, String host, String direccionMAC, String memoria, String ip, String capacidad, String tipoEquipo) {
         this.idEquipo = idEquipo;
-        this.ipHardware = ipHardware;
-        this.numerosSerie = numerosSerie;
+        this.nombre = nombre;
+        this.host = host;
         this.direccionMAC = direccionMAC;
         this.memoria = memoria;
         this.ip = ip;
         this.capacidad = capacidad;
+        this.tipoEquipo = tipoEquipo;
     }
 
     public Integer getIdEquipo() {
@@ -104,20 +132,20 @@ public class Equipo implements Serializable {
         this.idEquipo = idEquipo;
     }
 
-    public int getIpHardware() {
-        return ipHardware;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setIpHardware(int ipHardware) {
-        this.ipHardware = ipHardware;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getNumerosSerie() {
-        return numerosSerie;
+    public String getHost() {
+        return host;
     }
 
-    public void setNumerosSerie(String numerosSerie) {
-        this.numerosSerie = numerosSerie;
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public String getDireccionMAC() {
@@ -152,20 +180,84 @@ public class Equipo implements Serializable {
         this.capacidad = capacidad;
     }
 
-    public Integer getIdMotorBaseDeDatos() {
-        return idMotorBaseDeDatos;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setIdMotorBaseDeDatos(Integer idMotorBaseDeDatos) {
-        this.idMotorBaseDeDatos = idMotorBaseDeDatos;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public List<SoftwareEquipo> getSoftwareEquipoList() {
-        return softwareEquipoList;
+    public String getTipoEquipo() {
+        return tipoEquipo;
     }
 
-    public void setSoftwareEquipoList(List<SoftwareEquipo> softwareEquipoList) {
-        this.softwareEquipoList = softwareEquipoList;
+    public void setTipoEquipo(String tipoEquipo) {
+        this.tipoEquipo = tipoEquipo;
+    }
+
+    public List<SoftwareXEquipo> getSoftwareXEquipoList() {
+        return softwareXEquipoList;
+    }
+
+    public void setSoftwareXEquipoList(List<SoftwareXEquipo> softwareXEquipoList) {
+        this.softwareXEquipoList = softwareXEquipoList;
+    }
+
+    public List<EquipoVirtual> getEquipoVirtualList() {
+        return equipoVirtualList;
+    }
+
+    public void setEquipoVirtualList(List<EquipoVirtual> equipoVirtualList) {
+        this.equipoVirtualList = equipoVirtualList;
+    }
+
+    public List<Plataforma> getPlataformaList() {
+        return plataformaList;
+    }
+
+    public void setPlataformaList(List<Plataforma> plataformaList) {
+        this.plataformaList = plataformaList;
+    }
+
+    public List<MotorBaseDeDatos> getMotorBaseDeDatosList() {
+        return motorBaseDeDatosList;
+    }
+
+    public void setMotorBaseDeDatosList(List<MotorBaseDeDatos> motorBaseDeDatosList) {
+        this.motorBaseDeDatosList = motorBaseDeDatosList;
+    }
+
+    public DataCenter getIdDataCenter() {
+        return idDataCenter;
+    }
+
+    public void setIdDataCenter(DataCenter idDataCenter) {
+        this.idDataCenter = idDataCenter;
+    }
+
+    public Procesador getIdProcesador() {
+        return idProcesador;
+    }
+
+    public void setIdProcesador(Procesador idProcesador) {
+        this.idProcesador = idProcesador;
+    }
+
+    public SistemaOperativo getIdSistemaOperativo() {
+        return idSistemaOperativo;
+    }
+
+    public void setIdSistemaOperativo(SistemaOperativo idSistemaOperativo) {
+        this.idSistemaOperativo = idSistemaOperativo;
+    }
+
+    public List<EquipoFisico> getEquipoFisicoList() {
+        return equipoFisicoList;
+    }
+
+    public void setEquipoFisicoList(List<EquipoFisico> equipoFisicoList) {
+        this.equipoFisicoList = equipoFisicoList;
     }
 
     @Override

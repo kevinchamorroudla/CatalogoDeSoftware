@@ -15,12 +15,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -33,6 +33,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Software.findAll", query = "SELECT s FROM Software s"),
     @NamedQuery(name = "Software.findByIdSoftware", query = "SELECT s FROM Software s WHERE s.idSoftware = :idSoftware"),
     @NamedQuery(name = "Software.findByNombre", query = "SELECT s FROM Software s WHERE s.nombre = :nombre"),
+    @NamedQuery(name = "Software.findByWeb", query = "SELECT s FROM Software s WHERE s.web = :web"),
     @NamedQuery(name = "Software.findByVersion", query = "SELECT s FROM Software s WHERE s.version = :version"),
     @NamedQuery(name = "Software.findByDescripcion", query = "SELECT s FROM Software s WHERE s.descripcion = :descripcion"),
     @NamedQuery(name = "Software.findByPath", query = "SELECT s FROM Software s WHERE s.path = :path"),
@@ -45,49 +46,71 @@ public class Software implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_Software")
     private Integer idSoftware;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @Lob
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "web")
-    private byte[] web;
-    @Size(max = 45)
+    private boolean web;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "version")
     private String version;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "descripcion")
     private String descripcion;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 120)
     @Column(name = "path")
     private String path;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "numUsers")
-    private String numUsers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "software")
-    private List<SoftwareRequerimiento> softwareRequerimientoList;
+    private int numUsers;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
+    private List<SoftwareXEquipo> softwareXEquipoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
+    private List<Plataforma> plataformaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
+    private List<SoftwareXNavegadorWeb> softwareXNavegadorWebList;
+    @JoinColumn(name = "id_Clasificacion", referencedColumnName = "id_Clasificacion")
+    @ManyToOne(optional = false)
+    private Clasificacion idClasificacion;
     @JoinColumn(name = "id_Ambito", referencedColumnName = "id_Ambito")
     @ManyToOne(optional = false)
     private Ambito idAmbito;
     @JoinColumn(name = "id_AreaFuncional", referencedColumnName = "id_AreaFuncional")
     @ManyToOne(optional = false)
     private AreaFuncional idAreaFuncional;
-    @JoinColumn(name = "id_Clasificacion", referencedColumnName = "id_Clasificacion")
-    @ManyToOne(optional = false)
-    private Clasificacion idClasificacion;
     @JoinColumn(name = "id_Dominio", referencedColumnName = "id_Dominio")
     @ManyToOne(optional = false)
     private Dominio idDominio;
     @JoinColumn(name = "id_Lenguaje", referencedColumnName = "id_Lenguaje")
     @ManyToOne(optional = false)
     private Lenguaje idLenguaje;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
-    private List<SoftwareEquipo> softwareEquipoList;
 
     public Software() {
     }
 
     public Software(Integer idSoftware) {
         this.idSoftware = idSoftware;
+    }
+
+    public Software(Integer idSoftware, String nombre, boolean web, String version, String descripcion, String path, int numUsers) {
+        this.idSoftware = idSoftware;
+        this.nombre = nombre;
+        this.web = web;
+        this.version = version;
+        this.descripcion = descripcion;
+        this.path = path;
+        this.numUsers = numUsers;
     }
 
     public Integer getIdSoftware() {
@@ -106,11 +129,11 @@ public class Software implements Serializable {
         this.nombre = nombre;
     }
 
-    public byte[] getWeb() {
+    public boolean getWeb() {
         return web;
     }
 
-    public void setWeb(byte[] web) {
+    public void setWeb(boolean web) {
         this.web = web;
     }
 
@@ -138,20 +161,44 @@ public class Software implements Serializable {
         this.path = path;
     }
 
-    public String getNumUsers() {
+    public int getNumUsers() {
         return numUsers;
     }
 
-    public void setNumUsers(String numUsers) {
+    public void setNumUsers(int numUsers) {
         this.numUsers = numUsers;
     }
 
-    public List<SoftwareRequerimiento> getSoftwareRequerimientoList() {
-        return softwareRequerimientoList;
+    public List<SoftwareXEquipo> getSoftwareXEquipoList() {
+        return softwareXEquipoList;
     }
 
-    public void setSoftwareRequerimientoList(List<SoftwareRequerimiento> softwareRequerimientoList) {
-        this.softwareRequerimientoList = softwareRequerimientoList;
+    public void setSoftwareXEquipoList(List<SoftwareXEquipo> softwareXEquipoList) {
+        this.softwareXEquipoList = softwareXEquipoList;
+    }
+
+    public List<Plataforma> getPlataformaList() {
+        return plataformaList;
+    }
+
+    public void setPlataformaList(List<Plataforma> plataformaList) {
+        this.plataformaList = plataformaList;
+    }
+
+    public List<SoftwareXNavegadorWeb> getSoftwareXNavegadorWebList() {
+        return softwareXNavegadorWebList;
+    }
+
+    public void setSoftwareXNavegadorWebList(List<SoftwareXNavegadorWeb> softwareXNavegadorWebList) {
+        this.softwareXNavegadorWebList = softwareXNavegadorWebList;
+    }
+
+    public Clasificacion getIdClasificacion() {
+        return idClasificacion;
+    }
+
+    public void setIdClasificacion(Clasificacion idClasificacion) {
+        this.idClasificacion = idClasificacion;
     }
 
     public Ambito getIdAmbito() {
@@ -170,14 +217,6 @@ public class Software implements Serializable {
         this.idAreaFuncional = idAreaFuncional;
     }
 
-    public Clasificacion getIdClasificacion() {
-        return idClasificacion;
-    }
-
-    public void setIdClasificacion(Clasificacion idClasificacion) {
-        this.idClasificacion = idClasificacion;
-    }
-
     public Dominio getIdDominio() {
         return idDominio;
     }
@@ -192,14 +231,6 @@ public class Software implements Serializable {
 
     public void setIdLenguaje(Lenguaje idLenguaje) {
         this.idLenguaje = idLenguaje;
-    }
-
-    public List<SoftwareEquipo> getSoftwareEquipoList() {
-        return softwareEquipoList;
-    }
-
-    public void setSoftwareEquipoList(List<SoftwareEquipo> softwareEquipoList) {
-        this.softwareEquipoList = softwareEquipoList;
     }
 
     @Override

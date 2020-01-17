@@ -5,7 +5,7 @@
  */
 package ec.com.cataloglo.servicio;
 
-import ec.com.catalogo.modelo.Area;
+import ec.com.catalogo.modelo.Respaldo;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,19 +14,19 @@ import javax.ejb.Local;
  * @author carlosballadares
  */
 @Local
-public interface AreaFacadeLocal {
+public interface RespaldoFacadeLocal {
 
-    void create(Area area);
+    void create(Respaldo respaldo);
 
-    void edit(Area area);
+    void edit(Respaldo respaldo);
 
-    void remove(Area area);
+    void remove(Respaldo respaldo);
 
-    Area find(Object id);
+    Respaldo find(Object id);
 
-    List<Area> findAll();
+    List<Respaldo> findAll();
 
-    List<Area> findRange(int[] range);
+    List<Respaldo> findRange(int[] range);
 
     int count();
     

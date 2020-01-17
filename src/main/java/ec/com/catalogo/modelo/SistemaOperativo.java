@@ -6,14 +6,19 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,13 +32,11 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "SistemaOperativo.findAll", query = "SELECT s FROM SistemaOperativo s"),
     @NamedQuery(name = "SistemaOperativo.findByIdSistemaOperativo", query = "SELECT s FROM SistemaOperativo s WHERE s.idSistemaOperativo = :idSistemaOperativo"),
-    @NamedQuery(name = "SistemaOperativo.findByFabricante", query = "SELECT s FROM SistemaOperativo s WHERE s.fabricante = :fabricante"),
     @NamedQuery(name = "SistemaOperativo.findByTipo", query = "SELECT s FROM SistemaOperativo s WHERE s.tipo = :tipo"),
     @NamedQuery(name = "SistemaOperativo.findByVersion", query = "SELECT s FROM SistemaOperativo s WHERE s.version = :version"),
     @NamedQuery(name = "SistemaOperativo.findByArquitectura", query = "SELECT s FROM SistemaOperativo s WHERE s.arquitectura = :arquitectura"),
     @NamedQuery(name = "SistemaOperativo.findByLicencia", query = "SELECT s FROM SistemaOperativo s WHERE s.licencia = :licencia"),
-    @NamedQuery(name = "SistemaOperativo.findByPlataforma", query = "SELECT s FROM SistemaOperativo s WHERE s.plataforma = :plataforma"),
-    @NamedQuery(name = "SistemaOperativo.findByIdFabricante", query = "SELECT s FROM SistemaOperativo s WHERE s.idFabricante = :idFabricante")})
+    @NamedQuery(name = "SistemaOperativo.findByPlataforma", query = "SELECT s FROM SistemaOperativo s WHERE s.plataforma = :plataforma")})
 public class SistemaOperativo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,11 +45,6 @@ public class SistemaOperativo implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_SistemaOperativo")
     private Integer idSistemaOperativo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "fabricante")
-    private String fabricante;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -64,7 +62,7 @@ public class SistemaOperativo implements Serializable {
     private String arquitectura;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 100)
     @Column(name = "licencia")
     private String licencia;
     @Basic(optional = false)
@@ -72,9 +70,11 @@ public class SistemaOperativo implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "plataforma")
     private String plataforma;
-    @Size(max = 45)
-    @Column(name = "id_Fabricante")
-    private String idFabricante;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSistemaOperativo")
+    private List<Equipo> equipoList;
+    @JoinColumn(name = "id_Fabricante", referencedColumnName = "id_Fabricante")
+    @ManyToOne(optional = false)
+    private Fabricante idFabricante;
 
     public SistemaOperativo() {
     }
@@ -83,9 +83,8 @@ public class SistemaOperativo implements Serializable {
         this.idSistemaOperativo = idSistemaOperativo;
     }
 
-    public SistemaOperativo(Integer idSistemaOperativo, String fabricante, String tipo, String version, String arquitectura, String licencia, String plataforma) {
+    public SistemaOperativo(Integer idSistemaOperativo, String tipo, String version, String arquitectura, String licencia, String plataforma) {
         this.idSistemaOperativo = idSistemaOperativo;
-        this.fabricante = fabricante;
         this.tipo = tipo;
         this.version = version;
         this.arquitectura = arquitectura;
@@ -99,14 +98,6 @@ public class SistemaOperativo implements Serializable {
 
     public void setIdSistemaOperativo(Integer idSistemaOperativo) {
         this.idSistemaOperativo = idSistemaOperativo;
-    }
-
-    public String getFabricante() {
-        return fabricante;
-    }
-
-    public void setFabricante(String fabricante) {
-        this.fabricante = fabricante;
     }
 
     public String getTipo() {
@@ -149,11 +140,19 @@ public class SistemaOperativo implements Serializable {
         this.plataforma = plataforma;
     }
 
-    public String getIdFabricante() {
+    public List<Equipo> getEquipoList() {
+        return equipoList;
+    }
+
+    public void setEquipoList(List<Equipo> equipoList) {
+        this.equipoList = equipoList;
+    }
+
+    public Fabricante getIdFabricante() {
         return idFabricante;
     }
 
-    public void setIdFabricante(String idFabricante) {
+    public void setIdFabricante(Fabricante idFabricante) {
         this.idFabricante = idFabricante;
     }
 

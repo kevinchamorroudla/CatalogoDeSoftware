@@ -6,9 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -43,25 +41,31 @@ public class Requerimiento implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_Requerimiento")
     private Integer idRequerimiento;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "estado")
     private String estado;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "tipo")
     private String tipo;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "prioridad")
     private String prioridad;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "requerimiento")
-    private List<SoftwareRequerimiento> softwareRequerimientoList;
-    @JoinColumn(name = "id_Aprobador", referencedColumnName = "id_Persona")
-    @ManyToOne
+    @JoinColumn(name = "id_Aprobador", referencedColumnName = "id_Funcionario")
+    @ManyToOne(optional = false)
     private Funcionario idAprobador;
-    @JoinColumn(name = "id_Solicitante", referencedColumnName = "id_Persona")
-    @ManyToOne
+    @JoinColumn(name = "id_Solicitante", referencedColumnName = "id_Funcionario")
+    @ManyToOne(optional = false)
     private Funcionario idSolicitante;
 
     public Requerimiento() {
@@ -69,6 +73,14 @@ public class Requerimiento implements Serializable {
 
     public Requerimiento(Integer idRequerimiento) {
         this.idRequerimiento = idRequerimiento;
+    }
+
+    public Requerimiento(Integer idRequerimiento, String estado, String tipo, String prioridad, String descripcion) {
+        this.idRequerimiento = idRequerimiento;
+        this.estado = estado;
+        this.tipo = tipo;
+        this.prioridad = prioridad;
+        this.descripcion = descripcion;
     }
 
     public Integer getIdRequerimiento() {
@@ -109,14 +121,6 @@ public class Requerimiento implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public List<SoftwareRequerimiento> getSoftwareRequerimientoList() {
-        return softwareRequerimientoList;
-    }
-
-    public void setSoftwareRequerimientoList(List<SoftwareRequerimiento> softwareRequerimientoList) {
-        this.softwareRequerimientoList = softwareRequerimientoList;
     }
 
     public Funcionario getIdAprobador() {

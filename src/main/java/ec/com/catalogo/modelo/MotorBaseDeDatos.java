@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -50,8 +52,11 @@ public class MotorBaseDeDatos implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "version")
     private String version;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMotor")
-    private List<Instancia> instanciaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMotorBaseDeDatos")
+    private List<InstanciaBaseDeDatos> instanciaBaseDeDatosList;
+    @JoinColumn(name = "id_Equipo", referencedColumnName = "id_Equipo")
+    @ManyToOne(optional = false)
+    private Equipo idEquipo;
 
     public MotorBaseDeDatos() {
     }
@@ -90,12 +95,20 @@ public class MotorBaseDeDatos implements Serializable {
         this.version = version;
     }
 
-    public List<Instancia> getInstanciaList() {
-        return instanciaList;
+    public List<InstanciaBaseDeDatos> getInstanciaBaseDeDatosList() {
+        return instanciaBaseDeDatosList;
     }
 
-    public void setInstanciaList(List<Instancia> instanciaList) {
-        this.instanciaList = instanciaList;
+    public void setInstanciaBaseDeDatosList(List<InstanciaBaseDeDatos> instanciaBaseDeDatosList) {
+        this.instanciaBaseDeDatosList = instanciaBaseDeDatosList;
+    }
+
+    public Equipo getIdEquipo() {
+        return idEquipo;
+    }
+
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     @Override

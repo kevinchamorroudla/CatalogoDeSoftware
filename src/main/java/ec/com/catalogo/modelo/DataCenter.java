@@ -6,7 +6,9 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,8 +32,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "DataCenter.findByIdDataCenter", query = "SELECT d FROM DataCenter d WHERE d.idDataCenter = :idDataCenter"),
     @NamedQuery(name = "DataCenter.findBySector", query = "SELECT d FROM DataCenter d WHERE d.sector = :sector"),
     @NamedQuery(name = "DataCenter.findByArea", query = "SELECT d FROM DataCenter d WHERE d.area = :area"),
-    @NamedQuery(name = "DataCenter.findByCalle1", query = "SELECT d FROM DataCenter d WHERE d.calle1 = :calle1"),
-    @NamedQuery(name = "DataCenter.findByCalle2", query = "SELECT d FROM DataCenter d WHERE d.calle2 = :calle2"),
+    @NamedQuery(name = "DataCenter.findByCallePrincipal", query = "SELECT d FROM DataCenter d WHERE d.callePrincipal = :callePrincipal"),
+    @NamedQuery(name = "DataCenter.findByCalleSecundaria", query = "SELECT d FROM DataCenter d WHERE d.calleSecundaria = :calleSecundaria"),
     @NamedQuery(name = "DataCenter.findByNumero", query = "SELECT d FROM DataCenter d WHERE d.numero = :numero"),
     @NamedQuery(name = "DataCenter.findByDescripcion", query = "SELECT d FROM DataCenter d WHERE d.descripcion = :descripcion")})
 public class DataCenter implements Serializable {
@@ -53,14 +56,14 @@ public class DataCenter implements Serializable {
     private String area;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "calle1")
-    private String calle1;
+    @Size(min = 1, max = 200)
+    @Column(name = "callePrincipal")
+    private String callePrincipal;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "calle2")
-    private String calle2;
+    @Size(min = 1, max = 200)
+    @Column(name = "calleSecundaria")
+    private String calleSecundaria;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -69,6 +72,8 @@ public class DataCenter implements Serializable {
     @Size(max = 45)
     @Column(name = "descripcion")
     private String descripcion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDataCenter")
+    private List<Equipo> equipoList;
 
     public DataCenter() {
     }
@@ -77,12 +82,12 @@ public class DataCenter implements Serializable {
         this.idDataCenter = idDataCenter;
     }
 
-    public DataCenter(Integer idDataCenter, String sector, String area, String calle1, String calle2, String numero) {
+    public DataCenter(Integer idDataCenter, String sector, String area, String callePrincipal, String calleSecundaria, String numero) {
         this.idDataCenter = idDataCenter;
         this.sector = sector;
         this.area = area;
-        this.calle1 = calle1;
-        this.calle2 = calle2;
+        this.callePrincipal = callePrincipal;
+        this.calleSecundaria = calleSecundaria;
         this.numero = numero;
     }
 
@@ -110,20 +115,20 @@ public class DataCenter implements Serializable {
         this.area = area;
     }
 
-    public String getCalle1() {
-        return calle1;
+    public String getCallePrincipal() {
+        return callePrincipal;
     }
 
-    public void setCalle1(String calle1) {
-        this.calle1 = calle1;
+    public void setCallePrincipal(String callePrincipal) {
+        this.callePrincipal = callePrincipal;
     }
 
-    public String getCalle2() {
-        return calle2;
+    public String getCalleSecundaria() {
+        return calleSecundaria;
     }
 
-    public void setCalle2(String calle2) {
-        this.calle2 = calle2;
+    public void setCalleSecundaria(String calleSecundaria) {
+        this.calleSecundaria = calleSecundaria;
     }
 
     public String getNumero() {
@@ -140,6 +145,14 @@ public class DataCenter implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public List<Equipo> getEquipoList() {
+        return equipoList;
+    }
+
+    public void setEquipoList(List<Equipo> equipoList) {
+        this.equipoList = equipoList;
     }
 
     @Override

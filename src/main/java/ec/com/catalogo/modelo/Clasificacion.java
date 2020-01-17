@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,11 +35,13 @@ public class Clasificacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_Clasificacion")
     private Integer idClasificacion;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClasificacion")
@@ -48,6 +52,11 @@ public class Clasificacion implements Serializable {
 
     public Clasificacion(Integer idClasificacion) {
         this.idClasificacion = idClasificacion;
+    }
+
+    public Clasificacion(Integer idClasificacion, String nombre) {
+        this.idClasificacion = idClasificacion;
+        this.nombre = nombre;
     }
 
     public Integer getIdClasificacion() {

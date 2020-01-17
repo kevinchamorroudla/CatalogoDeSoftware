@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,13 +35,17 @@ public class AreaFuncional implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_AreaFuncional")
     private Integer idAreaFuncional;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAreaFuncional")
+    private List<Funcionario> funcionarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAreaFuncional")
     private List<Software> softwareList;
 
@@ -48,6 +54,11 @@ public class AreaFuncional implements Serializable {
 
     public AreaFuncional(Integer idAreaFuncional) {
         this.idAreaFuncional = idAreaFuncional;
+    }
+
+    public AreaFuncional(Integer idAreaFuncional, String nombre) {
+        this.idAreaFuncional = idAreaFuncional;
+        this.nombre = nombre;
     }
 
     public Integer getIdAreaFuncional() {
@@ -64,6 +75,14 @@ public class AreaFuncional implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Funcionario> getFuncionarioList() {
+        return funcionarioList;
+    }
+
+    public void setFuncionarioList(List<Funcionario> funcionarioList) {
+        this.funcionarioList = funcionarioList;
     }
 
     public List<Software> getSoftwareList() {

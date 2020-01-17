@@ -6,7 +6,9 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,54 +28,56 @@ import javax.validation.constraints.Size;
  * @author carlosballadares
  */
 @Entity
-@Table(name = "Almacenamiento")
+@Table(name = "Cuchilla")
 @NamedQueries({
-    @NamedQuery(name = "Almacenamiento.findAll", query = "SELECT a FROM Almacenamiento a"),
-    @NamedQuery(name = "Almacenamiento.findByIdAlmacenamiento", query = "SELECT a FROM Almacenamiento a WHERE a.idAlmacenamiento = :idAlmacenamiento"),
-    @NamedQuery(name = "Almacenamiento.findByLicencia", query = "SELECT a FROM Almacenamiento a WHERE a.licencia = :licencia")})
-public class Almacenamiento implements Serializable {
+    @NamedQuery(name = "Cuchilla.findAll", query = "SELECT c FROM Cuchilla c"),
+    @NamedQuery(name = "Cuchilla.findByIdCuchilla", query = "SELECT c FROM Cuchilla c WHERE c.idCuchilla = :idCuchilla"),
+    @NamedQuery(name = "Cuchilla.findByIp", query = "SELECT c FROM Cuchilla c WHERE c.ip = :ip")})
+public class Cuchilla implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_Almacenamiento")
-    private Integer idAlmacenamiento;
+    @Column(name = "id_Cuchilla")
+    private Integer idCuchilla;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "licencia")
-    private String licencia;
+    @Column(name = "ip")
+    private String ip;
     @JoinColumn(name = "id_EquipoFisico", referencedColumnName = "id_EquipoFisico")
     @ManyToOne(optional = false)
     private EquipoFisico idEquipoFisico;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuchilla")
+    private List<EquipoVirtual> equipoVirtualList;
 
-    public Almacenamiento() {
+    public Cuchilla() {
     }
 
-    public Almacenamiento(Integer idAlmacenamiento) {
-        this.idAlmacenamiento = idAlmacenamiento;
+    public Cuchilla(Integer idCuchilla) {
+        this.idCuchilla = idCuchilla;
     }
 
-    public Almacenamiento(Integer idAlmacenamiento, String licencia) {
-        this.idAlmacenamiento = idAlmacenamiento;
-        this.licencia = licencia;
+    public Cuchilla(Integer idCuchilla, String ip) {
+        this.idCuchilla = idCuchilla;
+        this.ip = ip;
     }
 
-    public Integer getIdAlmacenamiento() {
-        return idAlmacenamiento;
+    public Integer getIdCuchilla() {
+        return idCuchilla;
     }
 
-    public void setIdAlmacenamiento(Integer idAlmacenamiento) {
-        this.idAlmacenamiento = idAlmacenamiento;
+    public void setIdCuchilla(Integer idCuchilla) {
+        this.idCuchilla = idCuchilla;
     }
 
-    public String getLicencia() {
-        return licencia;
+    public String getIp() {
+        return ip;
     }
 
-    public void setLicencia(String licencia) {
-        this.licencia = licencia;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public EquipoFisico getIdEquipoFisico() {
@@ -83,21 +88,29 @@ public class Almacenamiento implements Serializable {
         this.idEquipoFisico = idEquipoFisico;
     }
 
+    public List<EquipoVirtual> getEquipoVirtualList() {
+        return equipoVirtualList;
+    }
+
+    public void setEquipoVirtualList(List<EquipoVirtual> equipoVirtualList) {
+        this.equipoVirtualList = equipoVirtualList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idAlmacenamiento != null ? idAlmacenamiento.hashCode() : 0);
+        hash += (idCuchilla != null ? idCuchilla.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Almacenamiento)) {
+        if (!(object instanceof Cuchilla)) {
             return false;
         }
-        Almacenamiento other = (Almacenamiento) object;
-        if ((this.idAlmacenamiento == null && other.idAlmacenamiento != null) || (this.idAlmacenamiento != null && !this.idAlmacenamiento.equals(other.idAlmacenamiento))) {
+        Cuchilla other = (Cuchilla) object;
+        if ((this.idCuchilla == null && other.idCuchilla != null) || (this.idCuchilla != null && !this.idCuchilla.equals(other.idCuchilla))) {
             return false;
         }
         return true;
@@ -105,7 +118,7 @@ public class Almacenamiento implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.catalogo.modelo.Almacenamiento[ idAlmacenamiento=" + idAlmacenamiento + " ]";
+        return "ec.com.catalogo.modelo.Cuchilla[ idCuchilla=" + idCuchilla + " ]";
     }
     
 }

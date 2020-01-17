@@ -7,14 +7,21 @@ package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -24,69 +31,124 @@ import javax.persistence.Table;
 @Table(name = "Funcionario")
 @NamedQueries({
     @NamedQuery(name = "Funcionario.findAll", query = "SELECT f FROM Funcionario f"),
-    @NamedQuery(name = "Funcionario.findByIdPersona", query = "SELECT f FROM Funcionario f WHERE f.funcionarioPK.idPersona = :idPersona"),
-    @NamedQuery(name = "Funcionario.findByIdAprobador", query = "SELECT f FROM Funcionario f WHERE f.funcionarioPK.idAprobador = :idAprobador"),
-    @NamedQuery(name = "Funcionario.findByIdArea", query = "SELECT f FROM Funcionario f WHERE f.funcionarioPK.idArea = :idArea")})
+    @NamedQuery(name = "Funcionario.findByIdFuncionario", query = "SELECT f FROM Funcionario f WHERE f.idFuncionario = :idFuncionario"),
+    @NamedQuery(name = "Funcionario.findByNombreUsuario", query = "SELECT f FROM Funcionario f WHERE f.nombreUsuario = :nombreUsuario"),
+    @NamedQuery(name = "Funcionario.findByPassword", query = "SELECT f FROM Funcionario f WHERE f.password = :password"),
+    @NamedQuery(name = "Funcionario.findByTipo", query = "SELECT f FROM Funcionario f WHERE f.tipo = :tipo")})
 public class Funcionario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected FuncionarioPK funcionarioPK;
-    @JoinColumn(name = "id_Aprobador", referencedColumnName = "id_Persona", insertable = false, updatable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_Funcionario")
+    private Integer idFuncionario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 120)
+    @Column(name = "nombreUsuario")
+    private String nombreUsuario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 120)
+    @Column(name = "password")
+    private String password;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "tipo")
+    private String tipo;
+    @JoinColumn(name = "id_AreaFuncional", referencedColumnName = "id_AreaFuncional")
     @ManyToOne(optional = false)
-    private Persona persona;
-    @JoinColumn(name = "id_Area", referencedColumnName = "id_Area", insertable = false, updatable = false)
+    private AreaFuncional idAreaFuncional;
+    @JoinColumn(name = "id_Persona", referencedColumnName = "id_Persona")
     @ManyToOne(optional = false)
-    private Area area;
-    @JoinColumn(name = "id_Persona", referencedColumnName = "id_Persona", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Persona persona1;
-    @OneToMany(mappedBy = "idAprobador")
+    private Persona idPersona;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAdmin")
+    private List<Plataforma> plataformaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOperador")
+    private List<Plataforma> plataformaList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAprobador")
     private List<Requerimiento> requerimientoList;
-    @OneToMany(mappedBy = "idSolicitante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitante")
     private List<Requerimiento> requerimientoList1;
 
     public Funcionario() {
     }
 
-    public Funcionario(FuncionarioPK funcionarioPK) {
-        this.funcionarioPK = funcionarioPK;
+    public Funcionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
-    public Funcionario(int idPersona, int idAprobador, int idArea) {
-        this.funcionarioPK = new FuncionarioPK(idPersona, idAprobador, idArea);
+    public Funcionario(Integer idFuncionario, String nombreUsuario, String password, String tipo) {
+        this.idFuncionario = idFuncionario;
+        this.nombreUsuario = nombreUsuario;
+        this.password = password;
+        this.tipo = tipo;
     }
 
-    public FuncionarioPK getFuncionarioPK() {
-        return funcionarioPK;
+    public Integer getIdFuncionario() {
+        return idFuncionario;
     }
 
-    public void setFuncionarioPK(FuncionarioPK funcionarioPK) {
-        this.funcionarioPK = funcionarioPK;
+    public void setIdFuncionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
-    public Area getArea() {
-        return area;
+    public String getPassword() {
+        return password;
     }
 
-    public void setArea(Area area) {
-        this.area = area;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Persona getPersona1() {
-        return persona1;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setPersona1(Persona persona1) {
-        this.persona1 = persona1;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public AreaFuncional getIdAreaFuncional() {
+        return idAreaFuncional;
+    }
+
+    public void setIdAreaFuncional(AreaFuncional idAreaFuncional) {
+        this.idAreaFuncional = idAreaFuncional;
+    }
+
+    public Persona getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(Persona idPersona) {
+        this.idPersona = idPersona;
+    }
+
+    public List<Plataforma> getPlataformaList() {
+        return plataformaList;
+    }
+
+    public void setPlataformaList(List<Plataforma> plataformaList) {
+        this.plataformaList = plataformaList;
+    }
+
+    public List<Plataforma> getPlataformaList1() {
+        return plataformaList1;
+    }
+
+    public void setPlataformaList1(List<Plataforma> plataformaList1) {
+        this.plataformaList1 = plataformaList1;
     }
 
     public List<Requerimiento> getRequerimientoList() {
@@ -108,7 +170,7 @@ public class Funcionario implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (funcionarioPK != null ? funcionarioPK.hashCode() : 0);
+        hash += (idFuncionario != null ? idFuncionario.hashCode() : 0);
         return hash;
     }
 
@@ -119,7 +181,7 @@ public class Funcionario implements Serializable {
             return false;
         }
         Funcionario other = (Funcionario) object;
-        if ((this.funcionarioPK == null && other.funcionarioPK != null) || (this.funcionarioPK != null && !this.funcionarioPK.equals(other.funcionarioPK))) {
+        if ((this.idFuncionario == null && other.idFuncionario != null) || (this.idFuncionario != null && !this.idFuncionario.equals(other.idFuncionario))) {
             return false;
         }
         return true;
@@ -127,7 +189,7 @@ public class Funcionario implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.catalogo.modelo.Funcionario[ funcionarioPK=" + funcionarioPK + " ]";
+        return "ec.com.catalogo.modelo.Funcionario[ idFuncionario=" + idFuncionario + " ]";
     }
     
 }

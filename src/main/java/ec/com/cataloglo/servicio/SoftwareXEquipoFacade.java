@@ -5,7 +5,7 @@
  */
 package ec.com.cataloglo.servicio;
 
-import ec.com.catalogo.modelo.User;
+import ec.com.catalogo.modelo.SoftwareXEquipo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author carlosballadares
  */
 @Stateless
-public class UserFacade extends AbstractFacade<User> implements UserFacadeLocal {
+public class SoftwareXEquipoFacade extends AbstractFacade<SoftwareXEquipo> implements SoftwareXEquipoFacadeLocal {
 
     @PersistenceContext(unitName = "catalogoSoftwarePU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class UserFacade extends AbstractFacade<User> implements UserFacadeLocal 
         return em;
     }
 
-    public UserFacade() {
-        super(User.class);
+    public SoftwareXEquipoFacade() {
+        super(SoftwareXEquipo.class);
     }
     
 }

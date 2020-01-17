@@ -19,7 +19,7 @@ public interface EquipoVirtualFacadeLocal {
     void create(EquipoVirtual equipoVirtual);
 
     void edit(EquipoVirtual equipoVirtual);
-
+   
     void remove(EquipoVirtual equipoVirtual);
 
     EquipoVirtual find(Object id);

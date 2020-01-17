@@ -6,7 +6,9 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -42,7 +45,7 @@ public class Procesador implements Serializable {
     private Integer idProcesador;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 100)
     @Column(name = "tipoTecnologia")
     private String tipoTecnologia;
     @Basic(optional = false)
@@ -65,6 +68,8 @@ public class Procesador implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "memoria")
     private String memoria;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProcesador")
+    private List<Equipo> equipoList;
 
     public Procesador() {
     }
@@ -128,6 +133,14 @@ public class Procesador implements Serializable {
 
     public void setMemoria(String memoria) {
         this.memoria = memoria;
+    }
+
+    public List<Equipo> getEquipoList() {
+        return equipoList;
+    }
+
+    public void setEquipoList(List<Equipo> equipoList) {
+        this.equipoList = equipoList;
     }
 
     @Override

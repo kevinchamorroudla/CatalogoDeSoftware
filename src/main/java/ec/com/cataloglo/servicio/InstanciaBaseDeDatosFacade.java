@@ -5,7 +5,7 @@
  */
 package ec.com.cataloglo.servicio;
 
-import ec.com.catalogo.modelo.Area;
+import ec.com.catalogo.modelo.InstanciaBaseDeDatos;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author carlosballadares
  */
 @Stateless
-public class AreaFacade extends AbstractFacade<Area> implements AreaFacadeLocal {
+public class InstanciaBaseDeDatosFacade extends AbstractFacade<InstanciaBaseDeDatos> implements InstanciaBaseDeDatosFacadeLocal {
 
     @PersistenceContext(unitName = "catalogoSoftwarePU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class AreaFacade extends AbstractFacade<Area> implements AreaFacadeLocal 
         return em;
     }
 
-    public AreaFacade() {
-        super(Area.class);
+    public InstanciaBaseDeDatosFacade() {
+        super(InstanciaBaseDeDatos.class);
     }
     
 }

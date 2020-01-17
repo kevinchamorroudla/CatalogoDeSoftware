@@ -23,18 +23,18 @@ import javax.persistence.Table;
  * @author carlosballadares
  */
 @Entity
-@Table(name = "SoftwareEquipo")
+@Table(name = "SoftwareXEquipo")
 @NamedQueries({
-    @NamedQuery(name = "SoftwareEquipo.findAll", query = "SELECT s FROM SoftwareEquipo s"),
-    @NamedQuery(name = "SoftwareEquipo.findByIdSoftwareEquipo", query = "SELECT s FROM SoftwareEquipo s WHERE s.idSoftwareEquipo = :idSoftwareEquipo")})
-public class SoftwareEquipo implements Serializable {
+    @NamedQuery(name = "SoftwareXEquipo.findAll", query = "SELECT s FROM SoftwareXEquipo s"),
+    @NamedQuery(name = "SoftwareXEquipo.findByIdSoftwareXEquipo", query = "SELECT s FROM SoftwareXEquipo s WHERE s.idSoftwareXEquipo = :idSoftwareXEquipo")})
+public class SoftwareXEquipo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_SoftwareEquipo")
-    private Integer idSoftwareEquipo;
+    @Column(name = "id_SoftwareXEquipo")
+    private Integer idSoftwareXEquipo;
     @JoinColumn(name = "id_Equipo", referencedColumnName = "id_Equipo")
     @ManyToOne(optional = false)
     private Equipo idEquipo;
@@ -42,19 +42,19 @@ public class SoftwareEquipo implements Serializable {
     @ManyToOne(optional = false)
     private Software idSoftware;
 
-    public SoftwareEquipo() {
+    public SoftwareXEquipo() {
     }
 
-    public SoftwareEquipo(Integer idSoftwareEquipo) {
-        this.idSoftwareEquipo = idSoftwareEquipo;
+    public SoftwareXEquipo(Integer idSoftwareXEquipo) {
+        this.idSoftwareXEquipo = idSoftwareXEquipo;
     }
 
-    public Integer getIdSoftwareEquipo() {
-        return idSoftwareEquipo;
+    public Integer getIdSoftwareXEquipo() {
+        return idSoftwareXEquipo;
     }
 
-    public void setIdSoftwareEquipo(Integer idSoftwareEquipo) {
-        this.idSoftwareEquipo = idSoftwareEquipo;
+    public void setIdSoftwareXEquipo(Integer idSoftwareXEquipo) {
+        this.idSoftwareXEquipo = idSoftwareXEquipo;
     }
 
     public Equipo getIdEquipo() {
@@ -76,18 +76,18 @@ public class SoftwareEquipo implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idSoftwareEquipo != null ? idSoftwareEquipo.hashCode() : 0);
+        hash += (idSoftwareXEquipo != null ? idSoftwareXEquipo.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SoftwareEquipo)) {
+        if (!(object instanceof SoftwareXEquipo)) {
             return false;
         }
-        SoftwareEquipo other = (SoftwareEquipo) object;
-        if ((this.idSoftwareEquipo == null && other.idSoftwareEquipo != null) || (this.idSoftwareEquipo != null && !this.idSoftwareEquipo.equals(other.idSoftwareEquipo))) {
+        SoftwareXEquipo other = (SoftwareXEquipo) object;
+        if ((this.idSoftwareXEquipo == null && other.idSoftwareXEquipo != null) || (this.idSoftwareXEquipo != null && !this.idSoftwareXEquipo.equals(other.idSoftwareXEquipo))) {
             return false;
         }
         return true;
@@ -95,7 +95,7 @@ public class SoftwareEquipo implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.catalogo.modelo.SoftwareEquipo[ idSoftwareEquipo=" + idSoftwareEquipo + " ]";
+        return "ec.com.catalogo.modelo.SoftwareXEquipo[ idSoftwareXEquipo=" + idSoftwareXEquipo + " ]";
     }
     
 }

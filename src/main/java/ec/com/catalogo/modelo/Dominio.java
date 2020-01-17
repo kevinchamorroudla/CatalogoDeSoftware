@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,11 +35,13 @@ public class Dominio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_Dominio")
     private Integer idDominio;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDominio")
@@ -48,6 +52,11 @@ public class Dominio implements Serializable {
 
     public Dominio(Integer idDominio) {
         this.idDominio = idDominio;
+    }
+
+    public Dominio(Integer idDominio, String nombre) {
+        this.idDominio = idDominio;
+        this.nombre = nombre;
     }
 
     public Integer getIdDominio() {

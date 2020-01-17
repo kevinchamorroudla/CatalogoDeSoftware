@@ -5,7 +5,7 @@
  */
 package ec.com.cataloglo.servicio;
 
-import ec.com.catalogo.modelo.SoftwareRequerimiento;
+import ec.com.catalogo.modelo.Fabricante;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author carlosballadares
  */
 @Stateless
-public class SoftwareRequerimientoFacade extends AbstractFacade<SoftwareRequerimiento> implements SoftwareRequerimientoFacadeLocal {
+public class FabricanteFacade extends AbstractFacade<Fabricante> implements FabricanteFacadeLocal {
 
     @PersistenceContext(unitName = "catalogoSoftwarePU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class SoftwareRequerimientoFacade extends AbstractFacade<SoftwareRequerim
         return em;
     }
 
-    public SoftwareRequerimientoFacade() {
-        super(SoftwareRequerimiento.class);
+    public FabricanteFacade() {
+        super(Fabricante.class);
     }
     
 }

@@ -6,14 +6,19 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,8 +33,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "NavegadorWeb.findAll", query = "SELECT n FROM NavegadorWeb n"),
     @NamedQuery(name = "NavegadorWeb.findByIdNavegadorWeb", query = "SELECT n FROM NavegadorWeb n WHERE n.idNavegadorWeb = :idNavegadorWeb"),
     @NamedQuery(name = "NavegadorWeb.findByNombre", query = "SELECT n FROM NavegadorWeb n WHERE n.nombre = :nombre"),
-    @NamedQuery(name = "NavegadorWeb.findByVersion", query = "SELECT n FROM NavegadorWeb n WHERE n.version = :version"),
-    @NamedQuery(name = "NavegadorWeb.findByIdFabricanteSoftware", query = "SELECT n FROM NavegadorWeb n WHERE n.idFabricanteSoftware = :idFabricanteSoftware")})
+    @NamedQuery(name = "NavegadorWeb.findByVersion", query = "SELECT n FROM NavegadorWeb n WHERE n.version = :version")})
 public class NavegadorWeb implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,10 +52,11 @@ public class NavegadorWeb implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "version")
     private String version;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_FabricanteSoftware")
-    private int idFabricanteSoftware;
+    @JoinColumn(name = "id_Fabricante", referencedColumnName = "id_Fabricante")
+    @ManyToOne(optional = false)
+    private Fabricante idFabricante;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idNavegadorWeb")
+    private List<SoftwareXNavegadorWeb> softwareXNavegadorWebList;
 
     public NavegadorWeb() {
     }
@@ -60,11 +65,10 @@ public class NavegadorWeb implements Serializable {
         this.idNavegadorWeb = idNavegadorWeb;
     }
 
-    public NavegadorWeb(Integer idNavegadorWeb, String nombre, String version, int idFabricanteSoftware) {
+    public NavegadorWeb(Integer idNavegadorWeb, String nombre, String version) {
         this.idNavegadorWeb = idNavegadorWeb;
         this.nombre = nombre;
         this.version = version;
-        this.idFabricanteSoftware = idFabricanteSoftware;
     }
 
     public Integer getIdNavegadorWeb() {
@@ -91,12 +95,20 @@ public class NavegadorWeb implements Serializable {
         this.version = version;
     }
 
-    public int getIdFabricanteSoftware() {
-        return idFabricanteSoftware;
+    public Fabricante getIdFabricante() {
+        return idFabricante;
     }
 
-    public void setIdFabricanteSoftware(int idFabricanteSoftware) {
-        this.idFabricanteSoftware = idFabricanteSoftware;
+    public void setIdFabricante(Fabricante idFabricante) {
+        this.idFabricante = idFabricante;
+    }
+
+    public List<SoftwareXNavegadorWeb> getSoftwareXNavegadorWebList() {
+        return softwareXNavegadorWebList;
+    }
+
+    public void setSoftwareXNavegadorWebList(List<SoftwareXNavegadorWeb> softwareXNavegadorWebList) {
+        this.softwareXNavegadorWebList = softwareXNavegadorWebList;
     }
 
     @Override

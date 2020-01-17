@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,17 +37,23 @@ public class Lenguaje implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_Lenguaje")
     private Integer idLenguaje;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "nombreLenguaje")
     private String nombreLenguaje;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "framework")
     private String framework;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "frontEnd")
     private String frontEnd;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLenguaje")
@@ -56,6 +64,13 @@ public class Lenguaje implements Serializable {
 
     public Lenguaje(Integer idLenguaje) {
         this.idLenguaje = idLenguaje;
+    }
+
+    public Lenguaje(Integer idLenguaje, String nombreLenguaje, String framework, String frontEnd) {
+        this.idLenguaje = idLenguaje;
+        this.nombreLenguaje = nombreLenguaje;
+        this.framework = framework;
+        this.frontEnd = frontEnd;
     }
 
     public Integer getIdLenguaje() {

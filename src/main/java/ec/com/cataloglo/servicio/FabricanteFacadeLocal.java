@@ -5,7 +5,7 @@
  */
 package ec.com.cataloglo.servicio;
 
-import ec.com.catalogo.modelo.User;
+import ec.com.catalogo.modelo.Fabricante;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,19 +14,19 @@ import javax.ejb.Local;
  * @author carlosballadares
  */
 @Local
-public interface UserFacadeLocal {
+public interface FabricanteFacadeLocal {
 
-    void create(User user);
+    void create(Fabricante fabricante);
 
-    void edit(User user);
+    void edit(Fabricante fabricante);
 
-    void remove(User user);
+    void remove(Fabricante fabricante);
 
-    User find(Object id);
+    Fabricante find(Object id);
 
-    List<User> findAll();
+    List<Fabricante> findAll();
 
-    List<User> findRange(int[] range);
+    List<Fabricante> findRange(int[] range);
 
     int count();
     

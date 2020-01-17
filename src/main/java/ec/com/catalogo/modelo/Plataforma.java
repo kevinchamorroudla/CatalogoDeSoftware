@@ -7,14 +7,19 @@ package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,15 +36,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Plataforma.findByNombre", query = "SELECT p FROM Plataforma p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Plataforma.findByTamanio", query = "SELECT p FROM Plataforma p WHERE p.tamanio = :tamanio"),
     @NamedQuery(name = "Plataforma.findByUsoDisco", query = "SELECT p FROM Plataforma p WHERE p.usoDisco = :usoDisco"),
-    @NamedQuery(name = "Plataforma.findByIdTipoPlataforma", query = "SELECT p FROM Plataforma p WHERE p.idTipoPlataforma = :idTipoPlataforma"),
-    @NamedQuery(name = "Plataforma.findByEstado", query = "SELECT p FROM Plataforma p WHERE p.estado = :estado"),
-    @NamedQuery(name = "Plataforma.findByIdAdmin", query = "SELECT p FROM Plataforma p WHERE p.idAdmin = :idAdmin"),
-    @NamedQuery(name = "Plataforma.findByIdAdminUser", query = "SELECT p FROM Plataforma p WHERE p.idAdminUser = :idAdminUser"),
-    @NamedQuery(name = "Plataforma.findByIdOperador", query = "SELECT p FROM Plataforma p WHERE p.idOperador = :idOperador"),
-    @NamedQuery(name = "Plataforma.findByIdOperadorUser", query = "SELECT p FROM Plataforma p WHERE p.idOperadorUser = :idOperadorUser"),
-    @NamedQuery(name = "Plataforma.findByIdFabricante", query = "SELECT p FROM Plataforma p WHERE p.idFabricante = :idFabricante"),
-    @NamedQuery(name = "Plataforma.findByIdEquipo", query = "SELECT p FROM Plataforma p WHERE p.idEquipo = :idEquipo"),
-    @NamedQuery(name = "Plataforma.findByIdSoftware", query = "SELECT p FROM Plataforma p WHERE p.idSoftware = :idSoftware")})
+    @NamedQuery(name = "Plataforma.findByEstado", query = "SELECT p FROM Plataforma p WHERE p.estado = :estado")})
 public class Plataforma implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,28 +55,34 @@ public class Plataforma implements Serializable {
     private BigDecimal tamanio;
     @Column(name = "usoDisco")
     private BigDecimal usoDisco;
-    @Column(name = "id_TipoPlataforma")
-    private Integer idTipoPlataforma;
     @Basic(optional = false)
     @NotNull
     @Column(name = "estado")
     private boolean estado;
-    @Column(name = "id_Admin")
-    private Integer idAdmin;
-    @Column(name = "id_AdminUser")
-    private Integer idAdminUser;
-    @Column(name = "id_Operador")
-    private Integer idOperador;
-    @Column(name = "id_OperadorUser")
-    private Integer idOperadorUser;
-    @Column(name = "id_Fabricante")
-    private Integer idFabricante;
-    @Size(max = 45)
-    @Column(name = "id_Equipo")
-    private String idEquipo;
-    @Size(max = 45)
-    @Column(name = "id_Software")
-    private String idSoftware;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlataforma")
+    private List<InstanciaBaseDeDatos> instanciaBaseDeDatosList;
+    @JoinColumn(name = "id_Admin", referencedColumnName = "id_Funcionario")
+    @ManyToOne(optional = false)
+    private Funcionario idAdmin;
+    @JoinColumn(name = "id_Equipo", referencedColumnName = "id_Equipo")
+    @ManyToOne(optional = false)
+    private Equipo idEquipo;
+    @JoinColumn(name = "id_Fabricante", referencedColumnName = "id_Fabricante")
+    @ManyToOne(optional = false)
+    private Fabricante idFabricante;
+    @JoinColumn(name = "id_Operador", referencedColumnName = "id_Funcionario")
+    @ManyToOne(optional = false)
+    private Funcionario idOperador;
+    @JoinColumn(name = "id_Software", referencedColumnName = "id_Software")
+    @ManyToOne(optional = false)
+    private Software idSoftware;
+    @JoinColumn(name = "id_TipoPlataforma", referencedColumnName = "id_TipoPlataforma")
+    @ManyToOne(optional = false)
+    private TipoPlataforma idTipoPlataforma;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlataforma")
+    private List<Respaldo> respaldoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlataforma")
+    private List<ServidorDeAplicaciones> servidorDeAplicacionesList;
 
     public Plataforma() {
     }
@@ -126,14 +129,6 @@ public class Plataforma implements Serializable {
         this.usoDisco = usoDisco;
     }
 
-    public Integer getIdTipoPlataforma() {
-        return idTipoPlataforma;
-    }
-
-    public void setIdTipoPlataforma(Integer idTipoPlataforma) {
-        this.idTipoPlataforma = idTipoPlataforma;
-    }
-
     public boolean getEstado() {
         return estado;
     }
@@ -142,60 +137,76 @@ public class Plataforma implements Serializable {
         this.estado = estado;
     }
 
-    public Integer getIdAdmin() {
+    public List<InstanciaBaseDeDatos> getInstanciaBaseDeDatosList() {
+        return instanciaBaseDeDatosList;
+    }
+
+    public void setInstanciaBaseDeDatosList(List<InstanciaBaseDeDatos> instanciaBaseDeDatosList) {
+        this.instanciaBaseDeDatosList = instanciaBaseDeDatosList;
+    }
+
+    public Funcionario getIdAdmin() {
         return idAdmin;
     }
 
-    public void setIdAdmin(Integer idAdmin) {
+    public void setIdAdmin(Funcionario idAdmin) {
         this.idAdmin = idAdmin;
     }
 
-    public Integer getIdAdminUser() {
-        return idAdminUser;
-    }
-
-    public void setIdAdminUser(Integer idAdminUser) {
-        this.idAdminUser = idAdminUser;
-    }
-
-    public Integer getIdOperador() {
-        return idOperador;
-    }
-
-    public void setIdOperador(Integer idOperador) {
-        this.idOperador = idOperador;
-    }
-
-    public Integer getIdOperadorUser() {
-        return idOperadorUser;
-    }
-
-    public void setIdOperadorUser(Integer idOperadorUser) {
-        this.idOperadorUser = idOperadorUser;
-    }
-
-    public Integer getIdFabricante() {
-        return idFabricante;
-    }
-
-    public void setIdFabricante(Integer idFabricante) {
-        this.idFabricante = idFabricante;
-    }
-
-    public String getIdEquipo() {
+    public Equipo getIdEquipo() {
         return idEquipo;
     }
 
-    public void setIdEquipo(String idEquipo) {
+    public void setIdEquipo(Equipo idEquipo) {
         this.idEquipo = idEquipo;
     }
 
-    public String getIdSoftware() {
+    public Fabricante getIdFabricante() {
+        return idFabricante;
+    }
+
+    public void setIdFabricante(Fabricante idFabricante) {
+        this.idFabricante = idFabricante;
+    }
+
+    public Funcionario getIdOperador() {
+        return idOperador;
+    }
+
+    public void setIdOperador(Funcionario idOperador) {
+        this.idOperador = idOperador;
+    }
+
+    public Software getIdSoftware() {
         return idSoftware;
     }
 
-    public void setIdSoftware(String idSoftware) {
+    public void setIdSoftware(Software idSoftware) {
         this.idSoftware = idSoftware;
+    }
+
+    public TipoPlataforma getIdTipoPlataforma() {
+        return idTipoPlataforma;
+    }
+
+    public void setIdTipoPlataforma(TipoPlataforma idTipoPlataforma) {
+        this.idTipoPlataforma = idTipoPlataforma;
+    }
+
+    public List<Respaldo> getRespaldoList() {
+        return respaldoList;
+    }
+
+    public void setRespaldoList(List<Respaldo> respaldoList) {
+        this.respaldoList = respaldoList;
+    }
+
+    public List<ServidorDeAplicaciones> getServidorDeAplicacionesList() {
+        return servidorDeAplicacionesList;
+    }
+
+    public void setServidorDeAplicacionesList(List<ServidorDeAplicaciones> servidorDeAplicacionesList) {
+        this.servidorDeAplicacionesList = servidorDeAplicacionesList;
     }
 
     @Override
