@@ -59,7 +59,7 @@ public class Funcionario implements Serializable {
     @Column(name = "tipo")
     private String tipo;
     @JoinColumn(name = "id_AreaFuncional", referencedColumnName = "id_AreaFuncional")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade=CascadeType.PERSIST)
     private AreaFuncional idAreaFuncional;
     @JoinColumn(name = "id_Persona", referencedColumnName = "id_Persona")
     @ManyToOne(optional = false)

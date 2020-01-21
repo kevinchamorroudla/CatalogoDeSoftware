@@ -6,6 +6,7 @@
 package ec.com.cataloglo.servicio;
 
 import ec.com.catalogo.modelo.Funcionario;
+import ec.com.catalogo.viewmodel.FuncionarioViewModel;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,5 +30,9 @@ public interface FuncionarioFacadeLocal {
     List<Funcionario> findRange(int[] range);
 
     int count();
+    
+    List<FuncionarioViewModel> findAllFuncionarios();
+    
+    Funcionario iniciarSesion(Funcionario usr);
     
 }
