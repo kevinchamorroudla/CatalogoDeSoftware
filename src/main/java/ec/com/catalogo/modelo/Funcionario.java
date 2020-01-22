@@ -189,7 +189,9 @@ public class Funcionario implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.catalogo.modelo.Funcionario[ idFuncionario=" + idFuncionario + " ]";
+        return "Funcionario{" + "idFuncionario=" + idFuncionario + ", nombreUsuario=" + nombreUsuario + ", password=" + password + ", tipo=" + tipo + ", idAreaFuncional=" + idAreaFuncional + ", idPersona=" + idPersona + ", plataformaList=" + plataformaList + ", plataformaList1=" + plataformaList1 + ", requerimientoList=" + requerimientoList + ", requerimientoList1=" + requerimientoList1 + '}';
     }
+
+    
     
 }

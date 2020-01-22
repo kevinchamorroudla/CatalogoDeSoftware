@@ -93,9 +93,15 @@ public class RequerimientoController implements Serializable {
     
     public void nuevoRequerimiento(){
         try {
-            Funcionario solicitante = funcionarioEJB.find(Integer.parseInt(idSolicitante));
+            List<Funcionario> lFun = funcionarioEJB.findAll();
+            
+            Funcionario solicitante = lFun.stream()
+                    .filter(f -> f.getIdPersona().getIdPersona().equals(Integer.parseInt(idSolicitante.toString())))
+                    .findAny().orElse(null);
+            
             getRequerimiento().setIdSolicitante(solicitante);
             requerimientoEJB.create(getRequerimiento());
+            
             getAllRequerimientos();
         } catch (Exception e) {
         }

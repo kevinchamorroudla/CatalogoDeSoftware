@@ -161,7 +161,9 @@ public class Requerimiento implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.catalogo.modelo.Requerimiento[ idRequerimiento=" + idRequerimiento + " ]";
+        return "Requerimiento{" + "idRequerimiento=" + idRequerimiento + ", estado=" + estado + ", tipo=" + tipo + ", prioridad=" + prioridad + ", descripcion=" + descripcion + ", idAprobador=" + idAprobador + ", idSolicitante=" + idSolicitante + '}';
     }
+
+    
     
 }
