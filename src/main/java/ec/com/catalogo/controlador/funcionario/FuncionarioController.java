@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import ec.com.cataloglo.servicio.FuncionarioFacadeLocal;
 import ec.com.cataloglo.servicio.PersonaFacadeLocal;
-import ec.com.catalogo.modelo.AreaFuncional;
+import ec.com.catalogo.modelo.Areafuncional;
 import ec.com.catalogo.modelo.Persona;
 import ec.com.catalogo.modelo.Funcionario;
 //import com.udla.rfc.model.FuncionarioPK;
@@ -41,7 +41,7 @@ public class FuncionarioController implements Serializable{
     
     private Persona persona;
     private Funcionario funcionario;
-    private AreaFuncional area;
+    private Areafuncional area;
     private List<FuncionarioViewModel> funcionarios;
     List<Funcionario> f;
     public Persona getPersona() {
@@ -71,7 +71,8 @@ public class FuncionarioController implements Serializable{
     public void init() {
         getAllFuncionarios();
         persona = new Persona();
-        area = new AreaFuncional();
+        area = new Areafuncional();
+        area.setIdAreaFuncional(1);
         area.setNombre("Tecnologia");
         funcionario = new Funcionario();
     }

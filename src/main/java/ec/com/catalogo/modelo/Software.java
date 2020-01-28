@@ -6,7 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,13 +22,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Software")
+@Table(name = "software")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Software.findAll", query = "SELECT s FROM Software s"),
     @NamedQuery(name = "Software.findByIdSoftware", query = "SELECT s FROM Software s WHERE s.idSoftware = :idSoftware"),
@@ -74,12 +77,6 @@ public class Software implements Serializable {
     @NotNull
     @Column(name = "numUsers")
     private int numUsers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
-    private List<SoftwareXEquipo> softwareXEquipoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
-    private List<Plataforma> plataformaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
-    private List<SoftwareXNavegadorWeb> softwareXNavegadorWebList;
     @JoinColumn(name = "id_Clasificacion", referencedColumnName = "id_Clasificacion")
     @ManyToOne(optional = false)
     private Clasificacion idClasificacion;
@@ -88,13 +85,19 @@ public class Software implements Serializable {
     private Ambito idAmbito;
     @JoinColumn(name = "id_AreaFuncional", referencedColumnName = "id_AreaFuncional")
     @ManyToOne(optional = false)
-    private AreaFuncional idAreaFuncional;
+    private Areafuncional idAreaFuncional;
     @JoinColumn(name = "id_Dominio", referencedColumnName = "id_Dominio")
     @ManyToOne(optional = false)
     private Dominio idDominio;
     @JoinColumn(name = "id_Lenguaje", referencedColumnName = "id_Lenguaje")
     @ManyToOne(optional = false)
     private Lenguaje idLenguaje;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
+    private Collection<Softwarexnavegadorweb> softwarexnavegadorwebCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
+    private Collection<Softwarexequipo> softwarexequipoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSoftware")
+    private Collection<Plataforma> plataformaCollection;
 
     public Software() {
     }
@@ -169,30 +172,6 @@ public class Software implements Serializable {
         this.numUsers = numUsers;
     }
 
-    public List<SoftwareXEquipo> getSoftwareXEquipoList() {
-        return softwareXEquipoList;
-    }
-
-    public void setSoftwareXEquipoList(List<SoftwareXEquipo> softwareXEquipoList) {
-        this.softwareXEquipoList = softwareXEquipoList;
-    }
-
-    public List<Plataforma> getPlataformaList() {
-        return plataformaList;
-    }
-
-    public void setPlataformaList(List<Plataforma> plataformaList) {
-        this.plataformaList = plataformaList;
-    }
-
-    public List<SoftwareXNavegadorWeb> getSoftwareXNavegadorWebList() {
-        return softwareXNavegadorWebList;
-    }
-
-    public void setSoftwareXNavegadorWebList(List<SoftwareXNavegadorWeb> softwareXNavegadorWebList) {
-        this.softwareXNavegadorWebList = softwareXNavegadorWebList;
-    }
-
     public Clasificacion getIdClasificacion() {
         return idClasificacion;
     }
@@ -209,11 +188,11 @@ public class Software implements Serializable {
         this.idAmbito = idAmbito;
     }
 
-    public AreaFuncional getIdAreaFuncional() {
+    public Areafuncional getIdAreaFuncional() {
         return idAreaFuncional;
     }
 
-    public void setIdAreaFuncional(AreaFuncional idAreaFuncional) {
+    public void setIdAreaFuncional(Areafuncional idAreaFuncional) {
         this.idAreaFuncional = idAreaFuncional;
     }
 
@@ -231,6 +210,33 @@ public class Software implements Serializable {
 
     public void setIdLenguaje(Lenguaje idLenguaje) {
         this.idLenguaje = idLenguaje;
+    }
+
+    @XmlTransient
+    public Collection<Softwarexnavegadorweb> getSoftwarexnavegadorwebCollection() {
+        return softwarexnavegadorwebCollection;
+    }
+
+    public void setSoftwarexnavegadorwebCollection(Collection<Softwarexnavegadorweb> softwarexnavegadorwebCollection) {
+        this.softwarexnavegadorwebCollection = softwarexnavegadorwebCollection;
+    }
+
+    @XmlTransient
+    public Collection<Softwarexequipo> getSoftwarexequipoCollection() {
+        return softwarexequipoCollection;
+    }
+
+    public void setSoftwarexequipoCollection(Collection<Softwarexequipo> softwarexequipoCollection) {
+        this.softwarexequipoCollection = softwarexequipoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Plataforma> getPlataformaCollection() {
+        return plataformaCollection;
+    }
+
+    public void setPlataformaCollection(Collection<Plataforma> plataformaCollection) {
+        this.plataformaCollection = plataformaCollection;
     }
 
     @Override

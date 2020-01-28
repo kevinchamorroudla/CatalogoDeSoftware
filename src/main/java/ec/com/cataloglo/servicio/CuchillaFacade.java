@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Stateless
 public class CuchillaFacade extends AbstractFacade<Cuchilla> implements CuchillaFacadeLocal {

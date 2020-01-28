@@ -6,7 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,13 +22,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Cuchilla")
+@Table(name = "cuchilla")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cuchilla.findAll", query = "SELECT c FROM Cuchilla c"),
     @NamedQuery(name = "Cuchilla.findByIdCuchilla", query = "SELECT c FROM Cuchilla c WHERE c.idCuchilla = :idCuchilla"),
@@ -48,9 +51,9 @@ public class Cuchilla implements Serializable {
     private String ip;
     @JoinColumn(name = "id_EquipoFisico", referencedColumnName = "id_EquipoFisico")
     @ManyToOne(optional = false)
-    private EquipoFisico idEquipoFisico;
+    private Equipofisico idEquipoFisico;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuchilla")
-    private List<EquipoVirtual> equipoVirtualList;
+    private Collection<Equipovirtual> equipovirtualCollection;
 
     public Cuchilla() {
     }
@@ -80,20 +83,21 @@ public class Cuchilla implements Serializable {
         this.ip = ip;
     }
 
-    public EquipoFisico getIdEquipoFisico() {
+    public Equipofisico getIdEquipoFisico() {
         return idEquipoFisico;
     }
 
-    public void setIdEquipoFisico(EquipoFisico idEquipoFisico) {
+    public void setIdEquipoFisico(Equipofisico idEquipoFisico) {
         this.idEquipoFisico = idEquipoFisico;
     }
 
-    public List<EquipoVirtual> getEquipoVirtualList() {
-        return equipoVirtualList;
+    @XmlTransient
+    public Collection<Equipovirtual> getEquipovirtualCollection() {
+        return equipovirtualCollection;
     }
 
-    public void setEquipoVirtualList(List<EquipoVirtual> equipoVirtualList) {
-        this.equipoVirtualList = equipoVirtualList;
+    public void setEquipovirtualCollection(Collection<Equipovirtual> equipovirtualCollection) {
+        this.equipovirtualCollection = equipovirtualCollection;
     }
 
     @Override

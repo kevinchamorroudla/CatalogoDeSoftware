@@ -19,13 +19,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Almacenamiento")
+@Table(name = "almacenamiento")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Almacenamiento.findAll", query = "SELECT a FROM Almacenamiento a"),
     @NamedQuery(name = "Almacenamiento.findByIdAlmacenamiento", query = "SELECT a FROM Almacenamiento a WHERE a.idAlmacenamiento = :idAlmacenamiento"),
@@ -45,7 +47,7 @@ public class Almacenamiento implements Serializable {
     private String licencia;
     @JoinColumn(name = "id_EquipoFisico", referencedColumnName = "id_EquipoFisico")
     @ManyToOne(optional = false)
-    private EquipoFisico idEquipoFisico;
+    private Equipofisico idEquipoFisico;
 
     public Almacenamiento() {
     }
@@ -75,11 +77,11 @@ public class Almacenamiento implements Serializable {
         this.licencia = licencia;
     }
 
-    public EquipoFisico getIdEquipoFisico() {
+    public Equipofisico getIdEquipoFisico() {
         return idEquipoFisico;
     }
 
-    public void setIdEquipoFisico(EquipoFisico idEquipoFisico) {
+    public void setIdEquipoFisico(Equipofisico idEquipoFisico) {
         this.idEquipoFisico = idEquipoFisico;
     }
 

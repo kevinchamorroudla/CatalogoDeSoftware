@@ -7,7 +7,7 @@ package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,13 +23,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Plataforma")
+@Table(name = "plataforma")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Plataforma.findAll", query = "SELECT p FROM Plataforma p"),
     @NamedQuery(name = "Plataforma.findByIdPlataforma", query = "SELECT p FROM Plataforma p WHERE p.idPlataforma = :idPlataforma"),
@@ -60,7 +63,11 @@ public class Plataforma implements Serializable {
     @Column(name = "estado")
     private boolean estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlataforma")
-    private List<InstanciaBaseDeDatos> instanciaBaseDeDatosList;
+    private Collection<Instanciabasededatos> instanciabasededatosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlataforma")
+    private Collection<Servidordeaplicaciones> servidordeaplicacionesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlataforma")
+    private Collection<Respaldo> respaldoCollection;
     @JoinColumn(name = "id_Admin", referencedColumnName = "id_Funcionario")
     @ManyToOne(optional = false)
     private Funcionario idAdmin;
@@ -78,11 +85,7 @@ public class Plataforma implements Serializable {
     private Software idSoftware;
     @JoinColumn(name = "id_TipoPlataforma", referencedColumnName = "id_TipoPlataforma")
     @ManyToOne(optional = false)
-    private TipoPlataforma idTipoPlataforma;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlataforma")
-    private List<Respaldo> respaldoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlataforma")
-    private List<ServidorDeAplicaciones> servidorDeAplicacionesList;
+    private Tipoplataforma idTipoPlataforma;
 
     public Plataforma() {
     }
@@ -137,12 +140,31 @@ public class Plataforma implements Serializable {
         this.estado = estado;
     }
 
-    public List<InstanciaBaseDeDatos> getInstanciaBaseDeDatosList() {
-        return instanciaBaseDeDatosList;
+    @XmlTransient
+    public Collection<Instanciabasededatos> getInstanciabasededatosCollection() {
+        return instanciabasededatosCollection;
     }
 
-    public void setInstanciaBaseDeDatosList(List<InstanciaBaseDeDatos> instanciaBaseDeDatosList) {
-        this.instanciaBaseDeDatosList = instanciaBaseDeDatosList;
+    public void setInstanciabasededatosCollection(Collection<Instanciabasededatos> instanciabasededatosCollection) {
+        this.instanciabasededatosCollection = instanciabasededatosCollection;
+    }
+
+    @XmlTransient
+    public Collection<Servidordeaplicaciones> getServidordeaplicacionesCollection() {
+        return servidordeaplicacionesCollection;
+    }
+
+    public void setServidordeaplicacionesCollection(Collection<Servidordeaplicaciones> servidordeaplicacionesCollection) {
+        this.servidordeaplicacionesCollection = servidordeaplicacionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Respaldo> getRespaldoCollection() {
+        return respaldoCollection;
+    }
+
+    public void setRespaldoCollection(Collection<Respaldo> respaldoCollection) {
+        this.respaldoCollection = respaldoCollection;
     }
 
     public Funcionario getIdAdmin() {
@@ -185,28 +207,12 @@ public class Plataforma implements Serializable {
         this.idSoftware = idSoftware;
     }
 
-    public TipoPlataforma getIdTipoPlataforma() {
+    public Tipoplataforma getIdTipoPlataforma() {
         return idTipoPlataforma;
     }
 
-    public void setIdTipoPlataforma(TipoPlataforma idTipoPlataforma) {
+    public void setIdTipoPlataforma(Tipoplataforma idTipoPlataforma) {
         this.idTipoPlataforma = idTipoPlataforma;
-    }
-
-    public List<Respaldo> getRespaldoList() {
-        return respaldoList;
-    }
-
-    public void setRespaldoList(List<Respaldo> respaldoList) {
-        this.respaldoList = respaldoList;
-    }
-
-    public List<ServidorDeAplicaciones> getServidorDeAplicacionesList() {
-        return servidorDeAplicacionesList;
-    }
-
-    public void setServidorDeAplicacionesList(List<ServidorDeAplicaciones> servidorDeAplicacionesList) {
-        this.servidorDeAplicacionesList = servidorDeAplicacionesList;
     }
 
     @Override

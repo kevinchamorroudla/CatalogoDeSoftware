@@ -6,7 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,13 +20,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Fabricante")
+@Table(name = "fabricante")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Fabricante.findAll", query = "SELECT f FROM Fabricante f"),
     @NamedQuery(name = "Fabricante.findByIdFabricante", query = "SELECT f FROM Fabricante f WHERE f.idFabricante = :idFabricante"),
@@ -45,11 +48,11 @@ public class Fabricante implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFabricante")
-    private List<NavegadorWeb> navegadorWebList;
+    private Collection<Navegadorweb> navegadorwebCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFabricante")
-    private List<Plataforma> plataformaList;
+    private Collection<Sistemaoperativo> sistemaoperativoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFabricante")
-    private List<SistemaOperativo> sistemaOperativoList;
+    private Collection<Plataforma> plataformaCollection;
 
     public Fabricante() {
     }
@@ -79,28 +82,31 @@ public class Fabricante implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<NavegadorWeb> getNavegadorWebList() {
-        return navegadorWebList;
+    @XmlTransient
+    public Collection<Navegadorweb> getNavegadorwebCollection() {
+        return navegadorwebCollection;
     }
 
-    public void setNavegadorWebList(List<NavegadorWeb> navegadorWebList) {
-        this.navegadorWebList = navegadorWebList;
+    public void setNavegadorwebCollection(Collection<Navegadorweb> navegadorwebCollection) {
+        this.navegadorwebCollection = navegadorwebCollection;
     }
 
-    public List<Plataforma> getPlataformaList() {
-        return plataformaList;
+    @XmlTransient
+    public Collection<Sistemaoperativo> getSistemaoperativoCollection() {
+        return sistemaoperativoCollection;
     }
 
-    public void setPlataformaList(List<Plataforma> plataformaList) {
-        this.plataformaList = plataformaList;
+    public void setSistemaoperativoCollection(Collection<Sistemaoperativo> sistemaoperativoCollection) {
+        this.sistemaoperativoCollection = sistemaoperativoCollection;
     }
 
-    public List<SistemaOperativo> getSistemaOperativoList() {
-        return sistemaOperativoList;
+    @XmlTransient
+    public Collection<Plataforma> getPlataformaCollection() {
+        return plataformaCollection;
     }
 
-    public void setSistemaOperativoList(List<SistemaOperativo> sistemaOperativoList) {
-        this.sistemaOperativoList = sistemaOperativoList;
+    public void setPlataformaCollection(Collection<Plataforma> plataformaCollection) {
+        this.plataformaCollection = plataformaCollection;
     }
 
     @Override

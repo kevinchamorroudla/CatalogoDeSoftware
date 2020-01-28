@@ -1,16 +1,27 @@
 package ec.com.catalogo.viewmodel;
 
+import java.util.Date;
+
 public class RequerimientoViewModel {
     private String solicitanteNombre;
     private String tipo;
     private String descripcion;
     private String estado;
+    private Date fechaSolicitud;
 
     public RequerimientoViewModel(String solicitanteNombre, String tipo, String descripcion, String estado) {
         this.solicitanteNombre = solicitanteNombre;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.estado = estado;
+    }
+
+    public Date getFechaSolicitud() {
+        return fechaSolicitud;
+    }
+
+    public void setFechaSolicitud(Date fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
     }
 
     public String getSolicitanteNombre() {

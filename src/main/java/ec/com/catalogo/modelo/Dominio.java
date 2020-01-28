@@ -6,7 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,13 +20,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Dominio")
+@Table(name = "dominio")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Dominio.findAll", query = "SELECT d FROM Dominio d"),
     @NamedQuery(name = "Dominio.findByIdDominio", query = "SELECT d FROM Dominio d WHERE d.idDominio = :idDominio"),
@@ -45,7 +48,7 @@ public class Dominio implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDominio")
-    private List<Software> softwareList;
+    private Collection<Software> softwareCollection;
 
     public Dominio() {
     }
@@ -75,12 +78,13 @@ public class Dominio implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Software> getSoftwareList() {
-        return softwareList;
+    @XmlTransient
+    public Collection<Software> getSoftwareCollection() {
+        return softwareCollection;
     }
 
-    public void setSoftwareList(List<Software> softwareList) {
-        this.softwareList = softwareList;
+    public void setSoftwareCollection(Collection<Software> softwareCollection) {
+        this.softwareCollection = softwareCollection;
     }
 
     @Override

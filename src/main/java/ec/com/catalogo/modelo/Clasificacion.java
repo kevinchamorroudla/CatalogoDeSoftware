@@ -6,7 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,13 +20,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Clasificacion")
+@Table(name = "clasificacion")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Clasificacion.findAll", query = "SELECT c FROM Clasificacion c"),
     @NamedQuery(name = "Clasificacion.findByIdClasificacion", query = "SELECT c FROM Clasificacion c WHERE c.idClasificacion = :idClasificacion"),
@@ -45,7 +48,7 @@ public class Clasificacion implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClasificacion")
-    private List<Software> softwareList;
+    private Collection<Software> softwareCollection;
 
     public Clasificacion() {
     }
@@ -75,12 +78,13 @@ public class Clasificacion implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Software> getSoftwareList() {
-        return softwareList;
+    @XmlTransient
+    public Collection<Software> getSoftwareCollection() {
+        return softwareCollection;
     }
 
-    public void setSoftwareList(List<Software> softwareList) {
-        this.softwareList = softwareList;
+    public void setSoftwareCollection(Collection<Software> softwareCollection) {
+        this.softwareCollection = softwareCollection;
     }
 
     @Override

@@ -6,50 +6,124 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>RFC</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
+        <style>
+            .size-inputs{
+                width: 30rem !important;
+            }
+            .size-text-area{
+                height: 4rem;
+                width: 30rem;
+            }
+            .size-modal{
+                height: "90%";
+                width: "90%"
+            }
+        </style>
     </h:head>
     <h:body>
-        <h:form id="formFuncionario">
+        <div class="container">
+            <h:form id="formFuncionario">
+                <p:growl id="mensaje" severity="info, fatal" showSummary="true" showDetail="true"/>
+                <p:dialog class="size-modal" header="Creacion de requerimiento" widgetVar="dlg2" modal="true" responsive="true" blockScroll="false">
+                    <p:panel>
+                        <div class="form-group row">
+                            <h:outputLabel class="col-sm-3 col-form-label" value="Fecha solicitud " />
+                            <div class="col-sm-9">
+                                <p:datePicker rendered="true" id="spanish" value="#{requerimientoController.requerimiento.fechaSolicitud}" locale="es" monthNavigator="true" pattern="yyyy-MM-dd"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel class="col-sm-3 col-form-label" value="Solicitante " />
+                            <div class="col-sm-9">
+                                <p:selectOneMenu class="size-inputs" rendered="true" id="idSolicitante" value="#{requerimientoController.idSolicitante}">
+                                    <f:selectItem itemLabel="Seleccione solicitante" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{requerimientoController.personas}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel class="col-sm-3 col-form-label" value="Direccion o Coordinacion " />
+                            <div class="col-sm-9">
+                                <p:inputTextarea class="size-text-area" rendered="true" value="#{requerimientoController.requerimiento.direccionCoordinacion}" />
+                            </div>
+                        </div>
 
-            <p:commandButton value="Nuevo Requerimiento" action="#{requerimientoController.nuevoRequerimiento()}" update="formFuncionario"/>
+                        <div class="form-group row">
+                            <p:outputLabel class="col-sm-3 col-form-label" value="Descripcion del requerimiento" />
+                            <div class="col-sm-9">
+                                <p:inputTextarea class="size-text-area" rendered="true" value="#{requerimientoController.requerimiento.descripcion}" />
+                            </div>
+                        </div>
 
-            <p:panel header="Requerimiento">    
-                <h:outputLabel value="Estado " /> 
-                <h:inputText value="#{requerimientoController.requerimiento.estado}" />
-                <br />
-                <h:outputLabel value="Tipo " /> 
-                <h:inputText value="#{requerimientoController.requerimiento.tipo}" />
-                <br />
-                <h:outputLabel value="Prioridad " /> 
-                <h:inputText value="#{requerimientoController.requerimiento.prioridad}" />
-                <br />
-                <h:outputLabel value="Descripcion " /> 
-                <h:inputText value="#{requerimientoController.requerimiento.descripcion}" />
-                <br />
-                <p:outputLabel for="idSolicitante" value="Solicitante " />
-                <p:selectOneMenu id="idSolicitante" value="#{requerimientoController.idSolicitante}" style="width:150px">
-                    <f:selectItem itemLabel="Seleccione solicitante" itemValue="" noSelectionOption="true" />
-                    <f:selectItems value="#{requerimientoController.personas}" />
-                </p:selectOneMenu>
-            </p:panel>
-            <p:separator />
+                        <div class="form-group row">
+                            <p:outputLabel class="col-sm-3 col-form-label" value="Beneficios esperados" />
+                            <div class="col-sm-9">
+                                <p:inputTextarea class="size-text-area" rendered="true" value="#{requerimientoController.requerimiento.beneficios}" />
+                            </div>
+                        </div>
 
-            <p:dataTable var="requerimiento" value="#{requerimientoController.requerimientos}">
-                <p:column headerText="Estado">
-                    <h:outputText value="#{requerimiento.solicitanteNombre}" />
-                </p:column>
+                        <div class="form-group row">
+                            <h:outputLabel class="col-sm-3 col-form-label" value="Nombre de quien Autoriza" />
+                            <div class="col-sm-9">
+                                <h:inputText class="size-inputs" value="#{requerimientoController.nombreAprobador}" readonly="true" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <h:outputLabel class="col-sm-3 col-form-label" value="Tipo " />
+                            <div class="col-sm-9">
+                                <p:selectOneMenu class="size-inputs" rendered="true" id="tipo" value="#{requerimientoController.requerimiento.tipo}">
+                                    <f:selectItem itemLabel="Seleccione tipo" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{requerimientoController.tiposRequerimiento}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <h:outputLabel class="col-sm-3 col-form-label" value="Prioridad " />
+                            <div class="col-sm-9">
+                                <p:selectOneMenu class="size-inputs" rendered="true" id="prioridad" value="#{requerimientoController.requerimiento.prioridad}">
+                                    <f:selectItem itemLabel="Seleccione prioridad" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{requerimientoController.prioridades}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </p:panel>
+                    <p:commandButton value="Crear" action="#{requerimientoController.nuevoRequerimiento()}" onclick="PF('dlg').hide()" update="formFuncionario, mensaje"/>
+                </p:dialog>  
 
-                <p:column headerText="Tipo">
-                    <h:outputText value="#{requerimiento.tipo}" />
-                </p:column>
+                <p:separator />
 
-                <p:column headerText="Prioridad">
-                    <h:outputText value="#{requerimiento.descripcion}" />
-                </p:column>
+                <p:commandButton value="Nuevo" type="button" onclick="PF('dlg2').show();" />
 
-                <p:column headerText="Descripcion">
-                    <h:outputText value="#{requerimiento.estado}" />
-                </p:column>
-            </p:dataTable>
-        </h:form>
+                <p:separator />
+
+                <p:dataTable var="requerimiento" value="#{requerimientoController.requerimientos}">
+                    
+                    <p:column style="width:5rem;text-align: left">
+                        <p:commandButton icon="pi pi-pencil" onclick="PF('dlg2').show();">
+                            <f:setPropertyActionListener value="#{requerimiento}" target="#{requerimientoController.requerimiento}" />
+                        </p:commandButton>
+                    </p:column>
+                    
+                    <p:column headerText="Solicitante">
+                        <h:outputText value="#{requerimiento.solicitanteNombre}" />
+                    </p:column>
+
+                    <p:column headerText="Tipo">
+                        <h:outputText value="#{requerimiento.tipo}" />
+                    </p:column>
+
+                    <p:column headerText="Descripcion">
+                        <h:outputText value="#{requerimiento.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{requerimiento.estado}" />
+                    </p:column>
+                    
+                </p:dataTable>
+            </h:form>
+        </div>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     </h:body>
 </html>

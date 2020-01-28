@@ -11,7 +11,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Local
 public interface EquipoFacadeLocal {

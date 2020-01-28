@@ -5,25 +5,16 @@
  */
 package ec.com.cataloglo.servicio;
 
-import ec.com.catalogo.modelo.AreaFuncional;
 import ec.com.catalogo.modelo.Funcionario;
-import ec.com.catalogo.modelo.Persona;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
-
-import ec.com.catalogo.viewmodel.FuncionarioViewModel;
 import javax.persistence.Query;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Stateless
 public class FuncionarioFacade extends AbstractFacade<Funcionario> implements FuncionarioFacadeLocal {
@@ -40,25 +31,6 @@ public class FuncionarioFacade extends AbstractFacade<Funcionario> implements Fu
         super(Funcionario.class);
     }
     
-    @Override
-    public List<FuncionarioViewModel> findAllFuncionarios() {
-        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-        
-        CriteriaQuery<FuncionarioViewModel> query  = builder.createQuery( FuncionarioViewModel.class );
-        Root<Funcionario> from = query.from( Funcionario.class );
-        
-        Join<Funcionario, Persona> joinPersona = from.join("idPersona");
-        Join<Funcionario, AreaFuncional> joinArea = from.join("idArea"); 
-        
-        query.multiselect(joinPersona.get("cedula"), joinPersona.get("nombre"), joinArea.get("nombre"));
-        
-        TypedQuery<FuncionarioViewModel> createQuery = getEntityManager().createQuery(query);       
-        List<FuncionarioViewModel> resultList = createQuery.getResultList();
-        return resultList;
-    }
-    
-    
-        
     @Override
     public Funcionario iniciarSesion(Funcionario usr) {
         Funcionario usuario = null;

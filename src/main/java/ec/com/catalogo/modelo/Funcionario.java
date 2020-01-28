@@ -6,7 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,13 +22,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Funcionario")
+@Table(name = "funcionario")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Funcionario.findAll", query = "SELECT f FROM Funcionario f"),
     @NamedQuery(name = "Funcionario.findByIdFuncionario", query = "SELECT f FROM Funcionario f WHERE f.idFuncionario = :idFuncionario"),
@@ -59,19 +62,15 @@ public class Funcionario implements Serializable {
     @Column(name = "tipo")
     private String tipo;
     @JoinColumn(name = "id_AreaFuncional", referencedColumnName = "id_AreaFuncional")
-    @ManyToOne(optional = false, cascade=CascadeType.PERSIST)
-    private AreaFuncional idAreaFuncional;
+    @ManyToOne(optional = false)
+    private Areafuncional idAreaFuncional;
     @JoinColumn(name = "id_Persona", referencedColumnName = "id_Persona")
     @ManyToOne(optional = false)
     private Persona idPersona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAdmin")
-    private List<Plataforma> plataformaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOperador")
-    private List<Plataforma> plataformaList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAprobador")
-    private List<Requerimiento> requerimientoList;
+    @OneToMany(mappedBy = "idAprobador")
+    private Collection<Requerimiento> requerimientoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitante")
-    private List<Requerimiento> requerimientoList1;
+    private Collection<Requerimiento> requerimientoCollection1;
 
     public Funcionario() {
     }
@@ -119,11 +118,11 @@ public class Funcionario implements Serializable {
         this.tipo = tipo;
     }
 
-    public AreaFuncional getIdAreaFuncional() {
+    public Areafuncional getIdAreaFuncional() {
         return idAreaFuncional;
     }
 
-    public void setIdAreaFuncional(AreaFuncional idAreaFuncional) {
+    public void setIdAreaFuncional(Areafuncional idAreaFuncional) {
         this.idAreaFuncional = idAreaFuncional;
     }
 
@@ -135,36 +134,22 @@ public class Funcionario implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public List<Plataforma> getPlataformaList() {
-        return plataformaList;
+    @XmlTransient
+    public Collection<Requerimiento> getRequerimientoCollection() {
+        return requerimientoCollection;
     }
 
-    public void setPlataformaList(List<Plataforma> plataformaList) {
-        this.plataformaList = plataformaList;
+    public void setRequerimientoCollection(Collection<Requerimiento> requerimientoCollection) {
+        this.requerimientoCollection = requerimientoCollection;
     }
 
-    public List<Plataforma> getPlataformaList1() {
-        return plataformaList1;
+    @XmlTransient
+    public Collection<Requerimiento> getRequerimientoCollection1() {
+        return requerimientoCollection1;
     }
 
-    public void setPlataformaList1(List<Plataforma> plataformaList1) {
-        this.plataformaList1 = plataformaList1;
-    }
-
-    public List<Requerimiento> getRequerimientoList() {
-        return requerimientoList;
-    }
-
-    public void setRequerimientoList(List<Requerimiento> requerimientoList) {
-        this.requerimientoList = requerimientoList;
-    }
-
-    public List<Requerimiento> getRequerimientoList1() {
-        return requerimientoList1;
-    }
-
-    public void setRequerimientoList1(List<Requerimiento> requerimientoList1) {
-        this.requerimientoList1 = requerimientoList1;
+    public void setRequerimientoCollection1(Collection<Requerimiento> requerimientoCollection1) {
+        this.requerimientoCollection1 = requerimientoCollection1;
     }
 
     @Override
@@ -189,9 +174,7 @@ public class Funcionario implements Serializable {
 
     @Override
     public String toString() {
-        return "Funcionario{" + "idFuncionario=" + idFuncionario + ", nombreUsuario=" + nombreUsuario + ", password=" + password + ", tipo=" + tipo + ", idAreaFuncional=" + idAreaFuncional + ", idPersona=" + idPersona + ", plataformaList=" + plataformaList + ", plataformaList1=" + plataformaList1 + ", requerimientoList=" + requerimientoList + ", requerimientoList1=" + requerimientoList1 + '}';
+        return "ec.com.catalogo.modelo.Funcionario[ idFuncionario=" + idFuncionario + " ]";
     }
-
-    
     
 }

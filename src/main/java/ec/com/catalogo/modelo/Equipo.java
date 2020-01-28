@@ -6,7 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,13 +22,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Equipo")
+@Table(name = "equipo")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Equipo.findAll", query = "SELECT e FROM Equipo e"),
     @NamedQuery(name = "Equipo.findByIdEquipo", query = "SELECT e FROM Equipo e WHERE e.idEquipo = :idEquipo"),
@@ -87,24 +90,24 @@ public class Equipo implements Serializable {
     @Column(name = "tipoEquipo")
     private String tipoEquipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
-    private List<SoftwareXEquipo> softwareXEquipoList;
+    private Collection<Motorbasededatos> motorbasededatosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
-    private List<EquipoVirtual> equipoVirtualList;
+    private Collection<Equipofisico> equipofisicoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
-    private List<Plataforma> plataformaList;
+    private Collection<Softwarexequipo> softwarexequipoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
-    private List<MotorBaseDeDatos> motorBaseDeDatosList;
+    private Collection<Equipovirtual> equipovirtualCollection;
     @JoinColumn(name = "id_DataCenter", referencedColumnName = "id_DataCenter")
     @ManyToOne(optional = false)
-    private DataCenter idDataCenter;
+    private Datacenter idDataCenter;
     @JoinColumn(name = "id_Procesador", referencedColumnName = "id_Procesador")
     @ManyToOne(optional = false)
     private Procesador idProcesador;
     @JoinColumn(name = "id_SistemaOperativo", referencedColumnName = "id_SistemaOperativo")
     @ManyToOne(optional = false)
-    private SistemaOperativo idSistemaOperativo;
+    private Sistemaoperativo idSistemaOperativo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
-    private List<EquipoFisico> equipoFisicoList;
+    private Collection<Plataforma> plataformaCollection;
 
     public Equipo() {
     }
@@ -196,43 +199,47 @@ public class Equipo implements Serializable {
         this.tipoEquipo = tipoEquipo;
     }
 
-    public List<SoftwareXEquipo> getSoftwareXEquipoList() {
-        return softwareXEquipoList;
+    @XmlTransient
+    public Collection<Motorbasededatos> getMotorbasededatosCollection() {
+        return motorbasededatosCollection;
     }
 
-    public void setSoftwareXEquipoList(List<SoftwareXEquipo> softwareXEquipoList) {
-        this.softwareXEquipoList = softwareXEquipoList;
+    public void setMotorbasededatosCollection(Collection<Motorbasededatos> motorbasededatosCollection) {
+        this.motorbasededatosCollection = motorbasededatosCollection;
     }
 
-    public List<EquipoVirtual> getEquipoVirtualList() {
-        return equipoVirtualList;
+    @XmlTransient
+    public Collection<Equipofisico> getEquipofisicoCollection() {
+        return equipofisicoCollection;
     }
 
-    public void setEquipoVirtualList(List<EquipoVirtual> equipoVirtualList) {
-        this.equipoVirtualList = equipoVirtualList;
+    public void setEquipofisicoCollection(Collection<Equipofisico> equipofisicoCollection) {
+        this.equipofisicoCollection = equipofisicoCollection;
     }
 
-    public List<Plataforma> getPlataformaList() {
-        return plataformaList;
+    @XmlTransient
+    public Collection<Softwarexequipo> getSoftwarexequipoCollection() {
+        return softwarexequipoCollection;
     }
 
-    public void setPlataformaList(List<Plataforma> plataformaList) {
-        this.plataformaList = plataformaList;
+    public void setSoftwarexequipoCollection(Collection<Softwarexequipo> softwarexequipoCollection) {
+        this.softwarexequipoCollection = softwarexequipoCollection;
     }
 
-    public List<MotorBaseDeDatos> getMotorBaseDeDatosList() {
-        return motorBaseDeDatosList;
+    @XmlTransient
+    public Collection<Equipovirtual> getEquipovirtualCollection() {
+        return equipovirtualCollection;
     }
 
-    public void setMotorBaseDeDatosList(List<MotorBaseDeDatos> motorBaseDeDatosList) {
-        this.motorBaseDeDatosList = motorBaseDeDatosList;
+    public void setEquipovirtualCollection(Collection<Equipovirtual> equipovirtualCollection) {
+        this.equipovirtualCollection = equipovirtualCollection;
     }
 
-    public DataCenter getIdDataCenter() {
+    public Datacenter getIdDataCenter() {
         return idDataCenter;
     }
 
-    public void setIdDataCenter(DataCenter idDataCenter) {
+    public void setIdDataCenter(Datacenter idDataCenter) {
         this.idDataCenter = idDataCenter;
     }
 
@@ -244,20 +251,21 @@ public class Equipo implements Serializable {
         this.idProcesador = idProcesador;
     }
 
-    public SistemaOperativo getIdSistemaOperativo() {
+    public Sistemaoperativo getIdSistemaOperativo() {
         return idSistemaOperativo;
     }
 
-    public void setIdSistemaOperativo(SistemaOperativo idSistemaOperativo) {
+    public void setIdSistemaOperativo(Sistemaoperativo idSistemaOperativo) {
         this.idSistemaOperativo = idSistemaOperativo;
     }
 
-    public List<EquipoFisico> getEquipoFisicoList() {
-        return equipoFisicoList;
+    @XmlTransient
+    public Collection<Plataforma> getPlataformaCollection() {
+        return plataformaCollection;
     }
 
-    public void setEquipoFisicoList(List<EquipoFisico> equipoFisicoList) {
-        this.equipoFisicoList = equipoFisicoList;
+    public void setPlataformaCollection(Collection<Plataforma> plataformaCollection) {
+        this.plataformaCollection = plataformaCollection;
     }
 
     @Override

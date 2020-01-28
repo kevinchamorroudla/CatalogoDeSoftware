@@ -6,7 +6,7 @@
 package ec.com.catalogo.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,13 +20,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlosballadares
+ * @author Kevin
  */
 @Entity
-@Table(name = "Procesador")
+@Table(name = "procesador")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Procesador.findAll", query = "SELECT p FROM Procesador p"),
     @NamedQuery(name = "Procesador.findByIdProcesador", query = "SELECT p FROM Procesador p WHERE p.idProcesador = :idProcesador"),
@@ -69,7 +72,7 @@ public class Procesador implements Serializable {
     @Column(name = "memoria")
     private String memoria;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProcesador")
-    private List<Equipo> equipoList;
+    private Collection<Equipo> equipoCollection;
 
     public Procesador() {
     }
@@ -135,12 +138,13 @@ public class Procesador implements Serializable {
         this.memoria = memoria;
     }
 
-    public List<Equipo> getEquipoList() {
-        return equipoList;
+    @XmlTransient
+    public Collection<Equipo> getEquipoCollection() {
+        return equipoCollection;
     }
 
-    public void setEquipoList(List<Equipo> equipoList) {
-        this.equipoList = equipoList;
+    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
+        this.equipoCollection = equipoCollection;
     }
 
     @Override
