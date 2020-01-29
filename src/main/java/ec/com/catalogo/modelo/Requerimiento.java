@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Kevin
+ * @author labmacq
  */
 @Entity
 @Table(name = "requerimiento")
@@ -202,11 +202,7 @@ public class Requerimiento implements Serializable {
 
     @Override
     public String toString() {
-        return "Requerimiento{" + "idRequerimiento=" + idRequerimiento + ", estado=" + estado + ", tipo=" + tipo + ", prioridad=" + prioridad 
-                + ", descripcion=" + descripcion + ", fechaSolicitud=" + fechaSolicitud.toString() + ", direccionCoordinacion=" + direccionCoordinacion 
-                + ", beneficios=" + beneficios + ", idAprobador=" + idAprobador + ", idSolicitante=" + idSolicitante + '}';
+        return "ec.com.catalogo.modelo.Requerimiento[ idRequerimiento=" + idRequerimiento + " ]";
     }
-
-    
     
 }

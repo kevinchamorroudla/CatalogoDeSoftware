@@ -100,7 +100,10 @@
                 <p:dataTable var="requerimiento" value="#{requerimientoController.requerimientos}">
                     
                     <p:column style="width:5rem;text-align: left">
-                        <p:commandButton icon="pi pi-pencil" onclick="PF('dlg2').show();">
+                        <p:commandButton value="U" onclick="PF('dlg2').show();">
+                            <f:setPropertyActionListener value="#{requerimiento}" target="#{requerimientoController.requerimiento}" />
+                        </p:commandButton>
+                        <p:commandButton value="D" onclick="#{requerimientoController.nuevoRequerimiento()}">
                             <f:setPropertyActionListener value="#{requerimiento}" target="#{requerimientoController.requerimiento}" />
                         </p:commandButton>
                     </p:column>

@@ -145,6 +145,16 @@ public class RequerimientoController implements Serializable {
         }
     }
     
+    public void eliminarRequerimiento() {
+        try{
+            requerimientoEJB.remove(this.requerimiento);
+            this.requerimiento = null;
+            getAllRequerimientos();
+        } catch(Exception ex) {
+            
+        }
+    }
+    
     public void getAllRequerimientos(){
         try {
             List<Requerimiento> lReq = requerimientoEJB.findAll();

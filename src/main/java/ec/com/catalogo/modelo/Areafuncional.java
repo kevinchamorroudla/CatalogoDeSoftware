@@ -28,61 +28,48 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author labmacq
  */
 @Entity
-@Table(name = "persona")
+@Table(name = "areafuncional")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p"),
-    @NamedQuery(name = "Persona.findByIdPersona", query = "SELECT p FROM Persona p WHERE p.idPersona = :idPersona"),
-    @NamedQuery(name = "Persona.findByCedula", query = "SELECT p FROM Persona p WHERE p.cedula = :cedula"),
-    @NamedQuery(name = "Persona.findByNombre", query = "SELECT p FROM Persona p WHERE p.nombre = :nombre")})
-public class Persona implements Serializable {
+    @NamedQuery(name = "Areafuncional.findAll", query = "SELECT a FROM Areafuncional a"),
+    @NamedQuery(name = "Areafuncional.findByIdAreaFuncional", query = "SELECT a FROM Areafuncional a WHERE a.idAreaFuncional = :idAreaFuncional"),
+    @NamedQuery(name = "Areafuncional.findByNombre", query = "SELECT a FROM Areafuncional a WHERE a.nombre = :nombre")})
+public class Areafuncional implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_Persona")
-    private Integer idPersona;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 11)
-    @Column(name = "cedula")
-    private String cedula;
+    @Column(name = "id_AreaFuncional")
+    private Integer idAreaFuncional;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAreaFuncional")
+    private Collection<Software> softwareCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAreaFuncional")
     private Collection<Funcionario> funcionarioCollection;
 
-    public Persona() {
+    public Areafuncional() {
     }
 
-    public Persona(Integer idPersona) {
-        this.idPersona = idPersona;
+    public Areafuncional(Integer idAreaFuncional) {
+        this.idAreaFuncional = idAreaFuncional;
     }
 
-    public Persona(Integer idPersona, String cedula, String nombre) {
-        this.idPersona = idPersona;
-        this.cedula = cedula;
+    public Areafuncional(Integer idAreaFuncional, String nombre) {
+        this.idAreaFuncional = idAreaFuncional;
         this.nombre = nombre;
     }
 
-    public Integer getIdPersona() {
-        return idPersona;
+    public Integer getIdAreaFuncional() {
+        return idAreaFuncional;
     }
 
-    public void setIdPersona(Integer idPersona) {
-        this.idPersona = idPersona;
-    }
-
-    public String getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
+    public void setIdAreaFuncional(Integer idAreaFuncional) {
+        this.idAreaFuncional = idAreaFuncional;
     }
 
     public String getNombre() {
@@ -91,6 +78,15 @@ public class Persona implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @XmlTransient
+    public Collection<Software> getSoftwareCollection() {
+        return softwareCollection;
+    }
+
+    public void setSoftwareCollection(Collection<Software> softwareCollection) {
+        this.softwareCollection = softwareCollection;
     }
 
     @XmlTransient
@@ -105,18 +101,18 @@ public class Persona implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idPersona != null ? idPersona.hashCode() : 0);
+        hash += (idAreaFuncional != null ? idAreaFuncional.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Persona)) {
+        if (!(object instanceof Areafuncional)) {
             return false;
         }
-        Persona other = (Persona) object;
-        if ((this.idPersona == null && other.idPersona != null) || (this.idPersona != null && !this.idPersona.equals(other.idPersona))) {
+        Areafuncional other = (Areafuncional) object;
+        if ((this.idAreaFuncional == null && other.idAreaFuncional != null) || (this.idAreaFuncional != null && !this.idAreaFuncional.equals(other.idAreaFuncional))) {
             return false;
         }
         return true;
@@ -124,7 +120,7 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.catalogo.modelo.Persona[ idPersona=" + idPersona + " ]";
+        return "ec.com.catalogo.modelo.Areafuncional[ idAreaFuncional=" + idAreaFuncional + " ]";
     }
     
 }

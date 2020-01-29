@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Kevin
+ * @author labmacq
  */
 @Entity
 @Table(name = "funcionario")
@@ -67,6 +67,10 @@ public class Funcionario implements Serializable {
     @JoinColumn(name = "id_Persona", referencedColumnName = "id_Persona")
     @ManyToOne(optional = false)
     private Persona idPersona;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAdmin")
+    private Collection<Plataforma> plataformaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOperador")
+    private Collection<Plataforma> plataformaCollection1;
     @OneToMany(mappedBy = "idAprobador")
     private Collection<Requerimiento> requerimientoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitante")
@@ -132,6 +136,24 @@ public class Funcionario implements Serializable {
 
     public void setIdPersona(Persona idPersona) {
         this.idPersona = idPersona;
+    }
+
+    @XmlTransient
+    public Collection<Plataforma> getPlataformaCollection() {
+        return plataformaCollection;
+    }
+
+    public void setPlataformaCollection(Collection<Plataforma> plataformaCollection) {
+        this.plataformaCollection = plataformaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Plataforma> getPlataformaCollection1() {
+        return plataformaCollection1;
+    }
+
+    public void setPlataformaCollection1(Collection<Plataforma> plataformaCollection1) {
+        this.plataformaCollection1 = plataformaCollection1;
     }
 
     @XmlTransient
